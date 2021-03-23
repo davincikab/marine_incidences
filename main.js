@@ -54,9 +54,26 @@ map.on("load", function(e) {
       "layout":{
          "visibility":"none"
       }
-    })
+    });
 
-      // load incidents data
+    map.addSource('eez-boundary', {
+        "type":"geojson",
+        "data":{"type":"FeatureCollection", "features":[]}
+    });
+
+    map.addLayer({
+        "id":'ee-zones',
+        "source":'eez-boundary',
+        "type":"line",
+        "paint":{
+            "line-color":"#d3e289",
+            "line-width":1
+        },
+        "layout":{
+            "visibility":"none"
+        }
+    });
+
 
       // load articles data
     let ARTICLE_URL = "https://staging-praesidiumintl.kinsta.cloud/wp-json/jet-cct/mare/?_orderby=_ID&_order=desc&_ordertype=integer";
@@ -74,6 +91,20 @@ map.on("load", function(e) {
     .catch(error => {
         console.error(error);
     });
+
+    // get ee boundary
+    fetch("eez_boundary.pbf")
+    .then(res => res.arrayBuffer())
+    .then(data => {
+        console.log(data);
+
+        var geojson = geobuf.decode(new Pbf(data));
+        // console.log(geojson);
+        map.getSource("eez-boundary").setData(geojson);
+    })
+    .catch(error => {
+        console.log(error);
+    })
 
 });
 

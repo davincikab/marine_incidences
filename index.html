@@ -27,6 +27,7 @@
             box-shadow: 2px 2px 0.2em #ddd;
             background-color: #323B4A;
             padding:0.25em;
+            font-size: 16px;
         }
 
         .filter-item {
@@ -51,7 +52,7 @@
         .filter-tab {
             position: absolute;
             left:8%;
-            height: 50%;
+            height: 40%;
             width: 350px;
             background-color: var(--gray);
             z-index: 2;
@@ -179,23 +180,29 @@
         /* layer tab */
         #layer-tab {
             display: none;
+            font-size: 16px;
         }
 
         #layer-tab .form-group {
             flex-direction: row !important;
             margin:0.2em 0.5em;
             align-items: center;
+            font-size: 16px;
+        }
+
+        #layer-tab .form-group label {
+            margin-left: 8px;
         }
 
         /* button */
         .btn {
             background-color: #0773b4;
-            padding:0.375em 0.5em;
-            border:1px solid #0773b4;
-            font-size: 1em;
-            color:white;
+            padding: 0em 0.5rem;
+            border: 1px solid #0773b4;
+            font-size: 16px;
+            color: white;
             border-radius: 8px;
-            margin:0.5em 0;
+            margin: 0.5em 0;
         }
 
         .btn-outline-white {
@@ -205,12 +212,13 @@
 
         .btn-outline-white:hover {
             background-color: white !important;
-            color: #323B4A;
+            color: #323B4A !important;
+            border-color: white !important;
         }
 
         .btn-outline-primary {
             background-color: transparent !important;
-            border: 2px solid #0773b4;
+            border: 2px solid #0773b4 !important;
         }
 
         .btn-outline-primary:hover {
@@ -243,7 +251,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="side-tab" style='width: 7%; height: 100vh;'>
+        <div class="side-tab" style='width: 7%; height: 90vh;'>
             <div class="filter-item" id="open-filter">
                 <span role="button" class="" >
                     <i class="fa fa-filter"></i>
@@ -304,7 +312,7 @@
 
                 <div class="form-group">
                     <input type="checkbox" name="articles" id="articles" checked>
-                    <label for="inputState">Articles</label>
+                    <label for="inputState">M.A.R.E</label>
                 </div>
 
                 <div class="form-group">
@@ -313,31 +321,48 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="checkbox" name="high-risk-areas" id="high-risk-areas">
-                    <label for="inputState">High Risk Areas</label>
-                </div>
-
-                <div class="form-group">
-                    <input type="checkbox" name="jwc-limits id="jwc-limits">
-                    <label for="inputState">JWC Limits</label>
+                    <input type="checkbox" name="ee-zones" id="ee-zones">
+                    <label for="inputState">Exclusive Economic Zones </label>
                 </div>
 
                 <div class="form-group">
                     <input type="checkbox" name="ee-zones" id="ee-zones">
-                    <label for="inputState">Exclusive Economic Zones </label>
+                    <label for="inputState">Contiguous Zones (24NM) </label>
+                </div>
+
+                <div class="form-group">
+                    <input type="checkbox" name="ee-zones" id="ee-zones">
+                    <label for="inputState">Territorial Seas (12NM) </label>
+                </div>
+
+                <div class="form-group">
+                    <input type="checkbox" name="ee-zones" id="ee-zones">
+                    <label for="inputState">Internal Waters </label>
+                </div>
+
+                <div class="form-group">
+                    <input type="checkbox" name="ee-zones" id="ee-zones">
+                    <label for="inputState">Archipelagic Waters</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="checkbox" name="ee-zones" id="ee-zones">
+                    <label for="inputState">IHO Sea Areas</label>
                 </div>
 
 
             </div>
         </div>
 
-        <div id='map' style='width: 93%; height: 100vh;'></div>
+        <div id='map' style='width: 93%; height: 90vh;'></div>
     </div>
     
 
     </div>
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://unpkg.com/pbf@3.0.5/dist/pbf.js"></script>
+    <script src="https://unpkg.com/geobuf@3.0.2/dist/geobuf.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
