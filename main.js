@@ -8,22 +8,22 @@ var map = new mapboxgl.Map({
     zoom: 2, // master zoom
 });
 
-   map.addControl(new mapboxgl.NavigationControl());
+map.addControl(new mapboxgl.NavigationControl());
     
-   // map load event
-   map.on("load", function(e) {
+// map load event
+map.on("load", function(e) {
       // load icons
 
       // heatmap
-      map.addSource('incidents', {
+    map.addSource('incidents', {
       "type":"geojson",
       "data":{
          "type":"FeatureCollection",
          "features":[]
       }
-      });
+    });
 
-      map.addLayer({
+    map.addLayer({
       "id":"incidents",
       "source":"incidents",
       "type":"heatmap",
@@ -54,39 +54,39 @@ var map = new mapboxgl.Map({
       "layout":{
          "visibility":"none"
       }
-      })
+    })
 
       // load incidents data
 
       // load articles data
-      let ARTICLE_URL = "https://staging-praesidiumintl.kinsta.cloud/wp-json/jet-cct/mare/?_orderby=_ID&_order=desc&_ordertype=integer";
-      fetch(ARTICLE_URL)
-      .then(res => res.json())
-      .then(data => {
-      console.log(data);
-      articles = data;
-      createCategoryMarkers(data); 
+    let ARTICLE_URL = "https://staging-praesidiumintl.kinsta.cloud/wp-json/jet-cct/mare/?_orderby=_ID&_order=desc&_ordertype=integer";
+    fetch(ARTICLE_URL)
+    .then(res => res.json())
+    .then(data => {
+        console.log(data);
+        articles = data;
+        createCategoryMarkers(data); 
 
-      // incidents
-      var incidentGeojson = createGeojson(data);
-      map.getSource('incidents').setData(incidentGeojson);
-      })
-      .catch(error => {
-      console.error(error);
-      });
+        // incidents
+        var incidentGeojson = createGeojson(data);
+        map.getSource('incidents').setData(incidentGeojson);
+    })
+    .catch(error => {
+        console.error(error);
+    });
 
-   });
+});
 
    // markers
-   function createCategoryMarkers(data) {
+function createCategoryMarkers(data) {
       data.forEach(item => {
-      createMarker(item);
+        createMarker(item);
       });
-   }
+}
 
-   function createMarker(item) {
-      // popup html content
-      let popupContent = "<div class='popup-content'>"+
+function createMarker(item) {
+    // popup html content
+    let popupContent = "<div class='popup-content'>"+
          "<img src='https://picsum.photos/200/300' alt='" + item.title + "' class='popup-img' />" +
          "<div class='article-info'>" +
          "<h2 class='article-title'><a href=''>" + item.title + "</a></h2>" +
@@ -94,21 +94,21 @@ var map = new mapboxgl.Map({
          "</div>" +
       "</div>";
 
-      // popup content
-      var popup = new mapboxgl.Popup()
+    // popup content
+    var popup = new mapboxgl.Popup()
       .setMaxWidth('300px')
       .setHTML(popupContent);
 
-      // get icon
-      let icon = getCategorizeMarker(item.category);
-      var markerIcon = document.createElement("div");
-      markerIcon.style.backgroundColor = item.bg_color;
+    // get icon
+    let icon = getCategorizeMarker(item.category);
+    var markerIcon = document.createElement("div");
+    markerIcon.style.backgroundColor = item.bg_color;
 
-      markerIcon.classList.add("div-marker");
+    markerIcon.classList.add("div-marker");
       // markerIcon.classList.add(icon);
 
-      // custom markers
-      var marker  = new mapboxgl.Marker({element:markerIcon})
+    // custom markers
+    var marker  = new mapboxgl.Marker({element:markerIcon})
       .setLngLat([parseFloat(item._lng), parseFloat(item._lat)])
       .setPopup(popup)
       .addTo(map);
@@ -117,35 +117,35 @@ var map = new mapboxgl.Map({
    }
 
    // marker types
-   function getCategorizeMarker(category) {
-      let markerType;
-      switch(category) {
-      case 'Piracy Attack':
-         markerType = "icon-one"
-         break;
-      case 'Sea Robbery':
-         markerType = "icon-two"
-         break;
-      case 'Suspicious':
-         markerType = "icon-three"
-         break;
-      default:
-         markerType = "icon-three"
-         break;
-      };
+function getCategorizeMarker(category) {
+    let markerType;
+    switch(category) {
+    case 'Piracy Attack':
+        markerType = "icon-one"
+        break;
+    case 'Sea Robbery':
+        markerType = "icon-two"
+        break;
+    case 'Suspicious':
+        markerType = "icon-three"
+        break;
+    default:
+        markerType = "icon-three"
+        break;
+    };
 
-      return markerType;
-   }
+    return markerType;
+}
 
-   function clearMarkers() {
-      articleMarkers.forEach(marker => marker.remove());
-   }
+function clearMarkers() {
+    articleMarkers.forEach(marker => marker.remove());
+}
 
-   function createGeojson(data) {
-      let fc = {"type":"FeatureCollection", "features":[]};
+function createGeojson(data) {
+    let fc = {"type":"FeatureCollection", "features":[]};
       
-      data.forEach(item => {
-      let feature = {
+    data.forEach(item => {
+    let feature = {
          "type":"Feature",
          "geometry":{
          "type":"Point",
