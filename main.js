@@ -144,7 +144,7 @@ map.on("load", function(e) {
     });
 
     // get ee boundary
-    fetch("eez_boundary.pbf")
+    fetch("https://davincikab.github.io/marine_incidences/eez_boundary.pbf")
     .then(res => res.arrayBuffer())
     .then(data => {
         console.log(data);
@@ -158,7 +158,7 @@ map.on("load", function(e) {
     });
 
     // get archipelagic waters
-    fetch("archipelagic_waters.pbf")
+    fetch("https://davincikab.github.io/marine_incidences/archipelagic_waters.pbf")
     .then(res => res.arrayBuffer())
     .then(data => {
         var geojson = geobuf.decode(new Pbf(data));
@@ -172,7 +172,7 @@ map.on("load", function(e) {
 
 
     // get ee_24nm data
-    fetch("eez_24nm.pbf")
+    fetch("https://davincikab.github.io/marine_incidences/eez_24nm.pbf")
     .then(res => res.arrayBuffer())
     .then(data => {
         var geojson = geobuf.decode(new Pbf(data));
@@ -185,7 +185,7 @@ map.on("load", function(e) {
     });
 
      // get ee_12nm data
-     fetch("eez_12nm.pbf")
+     fetch("https://davincikab.github.io/marine_incidences/eez_12nm.pbf")
      .then(res => res.arrayBuffer())
      .then(data => {
          var geojson = geobuf.decode(new Pbf(data));
