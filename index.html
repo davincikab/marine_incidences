@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Visualization</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <style>
+        :root {
+            --gray:#323848;
+            --gray2:#2F3643;
+            --light-gray:#5B6373;
+            --white:#fff;
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            background-color: #323B4A;
+        }
+
+        .side-tab {
+            box-shadow: 2px 2px 0.2em #ddd;
+            background-color: #323B4A;
+            padding:0.25em;
+        }
+
+        .filter-item {
+            background-color: var(--light-gray);
+            padding:6px 3px;
+            border-radius: 3px;
+            cursor: pointer;
+            width: 28px;
+            color:var(--white);
+            text-align: center;
+        }
+
+        .filter-item {
+            margin:0.5em 0;
+        }
+
+        .filter-item:focus, .filter-item:hover {
+            background-color: var(--white);
+            color:var(--gray)
+        }
+
+        .filter-tab {
+            position: absolute;
+            left:8%;
+            height: 50%;
+            width: 350px;
+            background-color: var(--gray);
+            z-index: 2;
+            box-shadow: 2px 2px 0.5em var(--gray2);
+            color:var(--white);
+            overflow: hidden;
+        }
+
+        .filter-header {
+            background-color: var(--gray2);
+            height: 30px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding:0 4px;
+            position: relative;
+        }
+
+        .filter-header .close-btn {
+            position: absolute;
+            top: 20%;
+            right: 3%;
+            cursor: pointer;
+        }
+
+        .filter-header .fa {
+            margin:0 6px;
+        }
+
+        .popup-img {
+            height: 150px;
+            width:100%;
+        }
+
+        .article-info {
+            padding:4px 8px;
+            font-family: inherit;
+        }
+
+        .article-title {
+            margin:03px 0;
+            font-size: 16px;
+            font-style: italic;
+        }
+
+        .article-title a {
+            text-decoration: none;
+            text-transform: uppercase;
+            color:#4169e1;
+        }
+
+        .article-title a:focus {
+            outline:none;
+        }
+
+        .article-info  p {
+            margin:0;
+        }
+
+        #map:focus {
+            border: none;
+        }
+
+        /* custom marker */
+        .div-marker {
+            height: 18px;
+            width: 2px;
+            box-shadow: 2px 2px 0.5em #453b3b;
+            background-color: black;
+            cursor: pointer;
+        }
+
+        .div-marker::before {
+            content: " ";
+            padding:5px;
+            border-radius: 50%;
+            position:absolute;
+            top:-2px;
+            left:-4px;
+            background-color: inherit;
+            box-shadow: 2px 2px 0.5em #453b3b;
+        }
+
+        /* filter tab */
+        #filter-tab {
+            display: none;
+        }
+
+        .filter-body {
+            padding:4px 8px;
+        }
+
+        .filter-body p {
+            margin: 0;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-control  {
+            appearance: none;
+            background-color: transparent;
+            font-size: 15px;
+            line-height: 24px;
+            color: currentColor;
+            padding: 6px 30px 6px 12px;
+            cursor: pointer;
+        }
+
+        .date-filter {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            margin: 1em 0;
+            padding: 0 1em;
+        }
+
+        .date-filter .form-group {
+            width: auto;
+            margin:0.25em 0;
+        }
+
+        /* layer tab */
+        #layer-tab {
+            display: none;
+        }
+
+        #layer-tab .form-group {
+            flex-direction: row !important;
+            margin:0.2em 0.5em;
+            align-items: center;
+        }
+
+        /* button */
+        .btn {
+            background-color: #0773b4;
+            padding:0.375em 0.5em;
+            border:1px solid #0773b4;
+            font-size: 1em;
+            color:white;
+            border-radius: 8px;
+            margin:0.5em 0;
+        }
+
+        .btn-outline-white {
+            background-color: transparent !important;
+            border:2px solid white;
+        }
+
+        .btn-outline-white:hover {
+            background-color: white !important;
+            color: #323B4A;
+        }
+
+        .btn-outline-primary {
+            background-color: transparent !important;
+            border: 2px solid #0773b4;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #0773b4 !important;
+        }
+        
+        /* popup styling */
+        #map .mapboxgl-popup {
+            font-size: 16px;
+        }
+
+        .mapboxgl-popup .mapboxgl-popup-content {
+            font-family: inherit;
+            padding: 0px 0px 15px;
+        }
+
+        .mapboxgl-popup-close-button {
+            background-color: gray !important;
+            color:white;
+            /* display: none !important; */
+        }
+        
+        .article-info p {
+            font-size: 1rem;
+            height: 100px;
+            overflow-y: scroll;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="side-tab" style='width: 7%; height: 100vh;'>
+            <div class="filter-item">
+                <span role="button" class="" id="open-filter">
+                    <i class="fa fa-filter"></i>
+                </span>
+            </div>
+
+            <div class="filter-item">
+                <span role="button" class="" id="open-layer-tab">
+                    <i class="fa fa-th-list"></i>
+                </span>
+            </div>
+
+            <div class="filter-tab" id="filter-tab">
+                <div class="filter-header">
+                    <span>
+                        <i class="fa fa-filter"></i>
+                    </span>
+
+                    <span>Incident Filter / Search</span>
+
+                    <span role="button" class="close-btn" id="close-filter">
+                        <i class="fa fa-times"></i>
+                    </span>
+                </div>
+
+                <div class="filter-body">
+                    <p>Reported Between</p>
+                    <div class="date-filter">
+                        <div class="form-group">
+                            <label for="from-date">From</label>
+                            <input type="date" name="from" id="from-date" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="to-date">To</label>
+                            <input type="date" name="to" id="to-date" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="d-flex">
+                        <button class="btn btn-outline-white" id="clear-filter">Clear</button>
+                        <button class="btn btn-outline-primary" id="apply-filter">Apply</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-tab" id="layer-tab">
+                <div class="filter-header">
+                    <span>
+                        <i class="fa fa-filter"></i>
+                    </span>
+
+                    <span>Incident Filter / Search</span>
+
+                    <span role="button" class="close-btn" id="close-layer-tab">
+                        <i class="fa fa-times"></i>
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <input type="checkbox" name="articles" id="articles" checked>
+                    <label for="inputState">Articles</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="checkbox" name="incidents" id="incidents">
+                    <label for="inputState">Incidents</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="checkbox" name="high-risk-areas" id="high-risk-areas">
+                    <label for="inputState">High Risk Areas</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="checkbox" name="jwc-limits id="jwc-limits">
+                    <label for="inputState">JWC Limits</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="checkbox" name="ee-zones" id="ee-zones">
+                    <label for="inputState">Exclusive Economic Zones </label>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div id='map' style='width: 93%; height: 100vh;'></div>
+    </div>
+    
+
+    </div>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
+    <script>
+        var articles, incidents, articleMarkers = [];
+
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYmxkZ2l0MTMiLCJhIjoiY2ttMzc4NmJ3MWV3YjJ1cW1lbWl3OG4wbiJ9.BxSkkd3BZnJXuxnYcwURog';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/bldgit13/ckmg34nec0elb17mto0vxj6lj',
+            center: [-7.594081153831553, 14.730749011074153], // master center
+            zoom: 2, // master zoom
+        });
+
+        map.addControl(new mapboxgl.NavigationControl());
+         
+        // map load event
+        map.on("load", function(e) {
+            // load icons
+
+            // heatmap
+            map.addSource('incidents', {
+                "type":"geojson",
+                "data":{
+                    "type":"FeatureCollection",
+                    "features":[]
+                }
+            });
+
+            map.addLayer({
+                "id":"incidents",
+                "source":"incidents",
+                "type":"heatmap",
+                "paint":{
+                    "heatmap-weight":{
+                        'property': 'dbh',
+                        'type': 'exponential',
+                        'stops': [
+                            [1, 0],
+                            [62, 1]
+                        ]
+                    },
+                    'heatmap-intensity': {
+                        stops: [
+                            [11, 1],
+                            [15, 3]
+                        ]
+                    },
+                    'heatmap-color': [
+                        'interpolate',
+                        ['linear'],
+                        ['heatmap-density'],
+                        0, 'transparent',
+                        0.2, '#e59b95',
+                        0.8, '#D7655A'
+                    ],
+                },
+                "layout":{
+                    "visibility":"none"
+                }
+            })
+
+            // load incidents data
+
+            // load articles data
+            let ARTICLE_URL = "https://staging-praesidiumintl.kinsta.cloud/wp-json/jet-cct/mare/?_orderby=_ID&_order=desc&_ordertype=integer";
+            fetch(ARTICLE_URL)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                articles = data;
+                createCategoryMarkers(data); 
+
+                // incidents
+                var incidentGeojson = createGeojson(data);
+                map.getSource('incidents').setData(incidentGeojson);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        });
+
+        // markers
+        function createCategoryMarkers(data) {
+            data.forEach(item => {
+                createMarker(item);
+            });
+        }
+
+        function createMarker(item) {
+            // popup html content
+            let popupContent = "<div class='popup-content'>"+
+                    "<img src='https://picsum.photos/200/300' alt='" + item.title + "' class='popup-img' />" +
+                    "<div class='article-info'>" +
+                        "<h2 class='article-title'><a href=''>" + item.title + "</a></h2>" +
+                        "<p>" + item.event_description +"</p>"+
+                    "</div>" +
+                "</div>";
+
+            // popup content
+            var popup = new mapboxgl.Popup()
+                .setMaxWidth('300px')
+                .setHTML(popupContent);
+
+            // get icon
+            let icon = getCategorizeMarker(item.category);
+            var markerIcon = document.createElement("div");
+            markerIcon.style.backgroundColor = item.bg_color;
+
+            markerIcon.classList.add("div-marker");
+            // markerIcon.classList.add(icon);
+
+            // custom markers
+            var marker  = new mapboxgl.Marker({element:markerIcon})
+                .setLngLat([parseFloat(item._lng), parseFloat(item._lat)])
+                .setPopup(popup)
+                .addTo(map);
+
+            articleMarkers.push(marker);
+        }
+
+        // marker types
+        function getCategorizeMarker(category) {
+            let markerType;
+            switch(category) {
+                case 'Piracy Attack':
+                    markerType = "icon-one"
+                    break;
+                case 'Sea Robbery':
+                    markerType = "icon-two"
+                    break;
+                case 'Suspicious':
+                    markerType = "icon-three"
+                    break;
+                default:
+                    markerType = "icon-three"
+                    break;
+            };
+
+            return markerType;
+        }
+
+        function clearMarkers() {
+            articleMarkers.forEach(marker => marker.remove());
+        }
+
+        function createGeojson(data) {
+            let fc = {"type":"FeatureCollection", "features":[]};
+            
+            data.forEach(item => {
+                let feature = {
+                    "type":"Feature",
+                    "geometry":{
+                        "type":"Point",
+                        "coordinates":[item._lng, item._lat]
+                    },
+                    "properties":{...item}
+                };
+
+                fc.features.push(feature);
+            })
+
+            return fc;
+        }
+
+        // layer control: Create a custom control
+        class LayerControl {
+            onAdd(map) {
+                this._map = map;
+                this._container = document.createElement('div');
+                this._container.className = 'mapboxgl-ctrl';
+
+                this._button = document.createElement("button");
+                this._button.classList.add("btn");
+                this._button.innerHTML = "<i class='fa fa-bars'></i>"
+                this._container.textContent = 'Hello, world';
+
+                return this._container; 
+            }
+
+            onRemove() {
+                this._container.parentNode.removeChild(this._container);
+                this._map = undefined;
+            }
+        }
+
+        // date filter
+        var fromDate = document.getElementById("from-date");
+        var toDate = document.getElementById("to-date");
+
+        var dateFilter = {from:"", to:""};
+
+        fromDate.addEventListener("change", function(e) {
+            console.log(e);
+            dateFilter.from = e.target.value;
+        });
+
+        toDate.addEventListener("change", function(e) {
+            console.log(e);
+            dateFilter.to = e.target.value;
+        });
+
+        var applyFilter = document.getElementById("apply-filter");
+        var clearFilter = document.getElementById("clear-filter");
+
+        applyFilter.addEventListener("click", function(e) {
+            // check if we have both from and to dates
+            if(dateFilter.from && dateFilter.to) {
+                // filter the data
+                var filteredArticles = articles.filter(article => {
+                    let articleDate = new Date(article.date);
+                    let { from, to } = dateFilter;
+
+                    if(new Date(from) < articleDate && new Date(to) > articleDate) {
+                        return article;
+                    }
+                });
+
+                // update the markers
+                clearMarkers();
+                createCategoryMarkers(filteredArticles);
+
+
+                console.log(filteredArticles);
+            }
+        });
+
+        clearFilter.addEventListener("click", function(e) {
+            // reset date input fields
+            dateFilter.from = fromDate.value = "";
+            dateFilter.to = toDate.value = "";
+
+        });
+
+        // open and close filter tab
+        var openFilter = document.getElementById("open-filter");
+        var closeFilter = document.getElementById("close-filter");
+        var filterTab = document.getElementById("filter-tab");
+
+        closeFilter.addEventListener("click", function(e) {
+            filterTab.style.display = "none";
+        });
+
+        openFilter.addEventListener("click", function(e) {
+            filterTab.style.display = "block";
+            layerTab.style.display = "none";
+        });
+
+        // open and close layer tab
+        var openLayerTab = document.getElementById("open-layer-tab");
+        var closeLayerTab = document.getElementById("close-layer-tab");
+        var layerTab = document.getElementById("layer-tab");
+
+        closeLayerTab.addEventListener("click", function(e) {
+            layerTab.style.display = "none";
+        });
+
+        openLayerTab.addEventListener("click", function(e) {
+            layerTab.style.display = "block";
+            filterTab.style.display = "none";
+        });
+
+        // toggle layers
+        var layersCheckbox = document.querySelectorAll(".form-group input[type=checkbox]");
+        layersCheckbox.forEach(layer => {
+            layer.addEventListener("input", function(e) {
+                let name = e.target.name;
+                let value = e.target.value;
+                let checked = e.target.checked;
+
+                // update the layout property
+                if(name == 'articles') {
+                    !checked ? clearMarkers() : createCategoryMarkers(articles);
+                } else {
+                    var visibility = checked ? 'visible' : 'none';
+                    map.setLayoutProperty(name, 'visibility', visibility);
+                }
+            });
+        });
+
+
+    </script>
+</body>
+</html>
