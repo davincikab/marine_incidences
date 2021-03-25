@@ -90,6 +90,7 @@
         .article-info {
             padding:4px 8px;
             font-family: inherit;
+            color:rgba(238, 113, 104, 0.855)
         }
 
         .article-title {
@@ -118,14 +119,16 @@
 
         /* custom marker */
         .div-marker {
-            height: 18px;
-            width: 2px;
+            height: 4px;
+            width: 4px;
             box-shadow: 2px 2px 0.5em #453b3b;
             background-color: black;
             cursor: pointer;
+            border-radius: 50%;
         }
 
         .div-marker::before {
+            display: none;
             content: " ";
             padding:5px;
             border-radius: 50%;

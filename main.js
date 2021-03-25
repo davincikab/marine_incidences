@@ -29,26 +29,26 @@ map.on("load", function(e) {
       "type":"heatmap",
       "paint":{
          "heatmap-weight":{
-         'property': 'dbh',
-         'type': 'exponential',
-         'stops': [
-            [1, 0],
-            [62, 1]
-         ]
+            'property': 'dbh',
+            'type': 'exponential',
+            'stops': [
+                [1, 0],
+                [62, 1]
+            ]
          },
          'heatmap-intensity': {
-         stops: [
-            [11, 1],
-            [15, 3]
-         ]
+            stops: [
+                [11, 1],
+                [15, 3]
+            ]
          },
          'heatmap-color': [
-         'interpolate',
-         ['linear'],
-         ['heatmap-density'],
-         0, 'transparent',
-         0.2, '#e59b95',
-         0.8, '#D7655A'
+            'interpolate',
+            ['linear'],
+            ['heatmap-density'],
+            0, 'rgba(238, 113, 104, 0)',
+            0.2, 'rgba(238, 113, 104, 0.555)',
+            0.8, 'rgba(238, 113, 104, 0.855)'
          ],
       },
       "layout":{
