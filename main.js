@@ -229,7 +229,7 @@ function getPopupContent(item) {
     "<img src='"+ item.photo +"' alt='" + item.title + "' class='popup-img' />" +
     "<div class='article-info'>" +
     "<h2 class='article-title'><a href=''>" + item.title + "</a></h2>" +
-    "<p>" + item.event_description +"</p>"+
+    // "<p>" + item.event_description +"</p>"+
     "</div>" +
  "</div>";
 }
@@ -451,3 +451,17 @@ openAttributionButton.addEventListener("click", function(e) {
 });
 
 
+
+// toggle sidebar
+var sideBar = document.getElementById("side-tab");
+var openSideTab = document.getElementById("open-side-tab");
+var closeSideTab = document.getElementById("close-side-tab");
+
+openSideTab.addEventListener("click", function(e) {
+    console.log("Opening");
+    sideBar.style.display = "block";
+});
+
+closeSideTab.addEventListener("click", function(e) {
+    sideBar.style.display = "none";
+});
