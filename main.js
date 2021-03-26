@@ -350,6 +350,7 @@ function createGeojson(data) {
    openFilter.addEventListener("click", function(e) {
       filterTab.style.display = "block";
       layerTab.style.display = "none";
+      attributionTab.style.display = "none";
    });
 
 // open and close layer tab
@@ -363,7 +364,9 @@ closeLayerTab.addEventListener("click", function(e) {
 
 openLayerTab.addEventListener("click", function(e) {
     layerTab.style.display = "block";
+
     filterTab.style.display = "none";
+    attributionTab.style.display = "none";
 });
 
 // toggle layers
@@ -383,3 +386,20 @@ layersCheckbox.forEach(layer => {
       }
       });
 });
+
+// toggle attribution tab
+var closeAttributionButton = document.getElementById("close-info-tab");
+var openAttributionButton = document.getElementById("open-info-tab");
+var attributionTab = document.getElementById("info-tab");
+
+closeAttributionButton.addEventListener("click", function(e) {
+    attributionTab.style.display = "none";
+});
+
+openAttributionButton.addEventListener("click", function(e) {
+    layerTab.style.display = "none";
+    filterTab.style.display = "none";
+    attributionTab.style.display = "block";
+});
+
+
