@@ -131,20 +131,17 @@ map.on("load", function(e) {
 
     // IHO Waters
     map.addSource('iho-seas', {
-        "type":"geojson",
-        "data":{
-            "type":"FeatureCollection",
-            "features":[]
-         }
+        "type":"vector",
+        "url":"mapbox://bldgit13.iho-seas"
     });
 
     map.addLayer({
         "id":'iho-seas',
         "source":'iho-seas',
-        // "source-layer":"iho-seas",
+        "source-layer":"iho-seas",
         "type":"fill",
         "paint":{
-            "fill-color":"#984ea3",
+            "fill-color":"#2facd6",
         },
         "layout":{
             "visibility":"none"
@@ -188,17 +185,17 @@ map.on("load", function(e) {
     });
 
     // // get iho-seas data
-    fetch("https://davincikab.github.io/marine_incidences/iho_seas.pbf")
-    .then(res => res.arrayBuffer())
-    .then(data => {
-        var geojson = geobuf.decode(new Pbf(data));
+    // fetch("https://davincikab.github.io/marine_incidences/iho_seas.pbf")
+    // .then(res => res.arrayBuffer())
+    // .then(data => {
+    //     var geojson = geobuf.decode(new Pbf(data));
 
-        // console.log(geojson);
-        map.getSource("iho-seas").setData(geojson);
-    })
-    .catch(error => {
-        console.log(error);
-    });
+    //     // console.log(geojson);
+    //     map.getSource("iho-seas").setData(geojson);
+    // })
+    // .catch(error => {
+    //     console.log(error);
+    // });
 
     // get internal waters boundary
     // fetch("https://davincikab.github.io/marine_incidences/internal_waters.pbf")
