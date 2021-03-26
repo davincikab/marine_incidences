@@ -54,6 +54,7 @@
             left:8%;
             height: 40%;
             width: 350px;
+            display: none;
             background-color: var(--gray);
             z-index: 2;
             box-shadow: 2px 2px 0.5em var(--gray2);
@@ -262,11 +263,24 @@
             height: 60%;
         }
 
+        #listing-div {
+            margin: 0.2em 0;
+            height: 70vh;
+            overflow-y: scroll;
+        }
+
+        .list-item {
+            color: white;
+            cursor: pointer;
+            box-shadow: 2px 2px 0.3em #202c35;
+            margin: 0.4em 0em;
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="side-tab" style='width: 7%; height: 90vh;'>
+        <div class="side-tab" style='width: 20%; height: 90vh;'>
             <div class="filter-item" id="open-filter">
                 <span role="button" class="" >
                     <i class="fa fa-filter"></i>
@@ -283,6 +297,10 @@
                 <span role="button" class="" >
                     <i class="fa fa-info"></i>
                 </span>
+            </div>
+
+            <div id="listing-div">
+
             </div>
 
             <div class="filter-tab" id="filter-tab">

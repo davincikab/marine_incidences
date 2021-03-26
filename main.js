@@ -1,4 +1,5 @@
 var articles, incidents, articleMarkers = [];
+var listingDiv = document.getElementById("listing-div");
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiYmxkZ2l0MTMiLCJhIjoiY2ttMzc4NmJ3MWV3YjJ1cW1lbWl3OG4wbiJ9.BxSkkd3BZnJXuxnYcwURog';
 var map = new mapboxgl.Map({
@@ -176,6 +177,10 @@ map.on("load", function(e) {
         articles = data;
         createCategoryMarkers(data); 
 
+        // sort the data by cc_created
+        data = data.sort((a, b) => new Date(a.cct_created) < new Date(b.cct_created));
+        createAlertListing(data.slice(0, 5));
+
         // incidents
         var incidentGeojson = createGeojson(data);
         map.getSource('incidents').setData(incidentGeojson);
@@ -195,13 +200,7 @@ function createCategoryMarkers(data) {
 
 function createMarker(item) {
     // popup html content
-    let popupContent = "<div class='popup-content'>"+
-         "<img src='https://picsum.photos/200/300' alt='" + item.title + "' class='popup-img' />" +
-         "<div class='article-info'>" +
-         "<h2 class='article-title'><a href=''>" + item.title + "</a></h2>" +
-         "<p>" + item.event_description +"</p>"+
-         "</div>" +
-      "</div>";
+    let popupContent = getPopupContent(item);
 
     // popup content
     var popup = new mapboxgl.Popup()
@@ -223,9 +222,78 @@ function createMarker(item) {
       .addTo(map);
 
       articleMarkers.push(marker);
-   }
+}
 
-   // marker types
+function getPopupContent(item) {
+    return "<div class='popup-content'>"+
+    "<img src='"+ item.photo +"' alt='" + item.title + "' class='popup-img' />" +
+    "<div class='article-info'>" +
+    "<h2 class='article-title'><a href=''>" + item.title + "</a></h2>" +
+    "<p>" + item.event_description +"</p>"+
+    "</div>" +
+ "</div>";
+}
+
+function createAlertListing(alerts) {
+    var docFrag = document.createDocumentFragment();
+
+    // get listing Item
+    alerts.forEach(alert => {
+        let item = createAlertListItem(alert);
+        docFrag.append(item);
+    });
+
+    // update the listing div
+    listingDiv.innerHTML = "";
+    listingDiv.append(docFrag);
+}
+
+function createAlertListItem(alert) {
+    var listItem = document.createElement("div");
+    listItem.classList.add("list-item");
+
+    // add alert list id
+    listItem.setAttribute("data-ID", alert._ID);
+
+    // add text content
+    listItem.innerHTML = alert.title;
+
+    // add interactivity
+    listItem.addEventListener("click", function(e) {
+        // get id attribute
+        let alertId = this.getAttribute("data-ID");
+        zoomToAlert(alertId);
+    });
+
+    return listItem;
+}
+
+
+function zoomToAlert(alertId) {
+    // find the alert with the given id
+    let activeAlert = articles.find(article => article._ID == alertId);
+
+    if(activeAlert) {
+        let center = [activeAlert._lng, activeAlert._lat];
+
+        // flyTo the alert
+        map.flyTo({
+            center:center,
+            zoom:8
+        });
+        
+        map.once("zoomend", function(e) {
+            // load a popup
+            new mapboxgl.Popup()
+                .setHTML(getPopupContent(activeAlert))
+                .setLngLat(center)
+                .addTo(map);
+        });
+        
+    }
+}
+
+// marker types
 function getCategorizeMarker(category) {
     let markerType;
     switch(category) {
@@ -269,26 +337,6 @@ function createGeojson(data) {
       return fc;
    }
 
-   // layer control: Create a custom control
-   class LayerControl {
-      onAdd(map) {
-      this._map = map;
-      this._container = document.createElement('div');
-      this._container.className = 'mapboxgl-ctrl';
-
-      this._button = document.createElement("button");
-      this._button.classList.add("btn");
-      this._button.innerHTML = "<i class='fa fa-bars'></i>"
-      this._container.textContent = 'Hello, world';
-
-      return this._container; 
-      }
-
-      onRemove() {
-      this._container.parentNode.removeChild(this._container);
-      this._map = undefined;
-      }
-   }
 
    // date filter
    var fromDate = document.getElementById("from-date");
