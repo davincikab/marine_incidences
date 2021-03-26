@@ -183,59 +183,7 @@ map.on("load", function(e) {
     .catch(error => {
         console.error(error);
     });
-
-    // // get iho-seas data
-    // fetch("https://davincikab.github.io/marine_incidences/iho_seas.pbf")
-    // .then(res => res.arrayBuffer())
-    // .then(data => {
-    //     var geojson = geobuf.decode(new Pbf(data));
-
-    //     // console.log(geojson);
-    //     map.getSource("iho-seas").setData(geojson);
-    // })
-    // .catch(error => {
-    //     console.log(error);
-    // });
-
-    // get internal waters boundary
-    // fetch("https://davincikab.github.io/marine_incidences/internal_waters.pbf")
-    // .then(res => res.arrayBuffer())
-    // .then(data => {
-    //     console.log(data);
-
-    //     var geojson = geobuf.decode(new Pbf(data));
-    //     // console.log(geojson);
-    //     map.getSource("internal-waters").setData(geojson);
-    // })
-    // .catch(error => {
-    //     console.log(error);
-    // });
-
-    // // get archipelagic waters
-    // fetch("https://davincikab.github.io/marine_incidences/archipelagic_waters.pbf")
-    // .then(res => res.arrayBuffer())
-    // .then(data => {
-    //     var geojson = geobuf.decode(new Pbf(data));
-
-    //     // console.log(geojson);
-    //     map.getSource("archipelagic-waters").setData(geojson);
-    // })
-    // .catch(error => {
-    //     console.log(error);
-    // });
-
-    //  // get ee_12nm data
-    //  fetch("https://davincikab.github.io/marine_incidences/eez_12nm.pbf")
-    //  .then(res => res.arrayBuffer())
-    //  .then(data => {
-    //      var geojson = geobuf.decode(new Pbf(data));
- 
-    //      // console.log(geojson);
-    //      map.getSource("eez-12nm").setData(geojson);
-    //  })
-    //  .catch(error => {
-    //      console.log(error);
-    //  });
+    
 });
 
    // markers
