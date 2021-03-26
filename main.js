@@ -57,13 +57,14 @@ map.on("load", function(e) {
     });
 
     map.addSource('eez-boundary', {
-        "type":"geojson",
-        "data":{"type":"FeatureCollection", "features":[]}
+        "type":"vector",
+        "url":"mapbox://bldgit13.eez-boundary"
     });
 
     map.addLayer({
         "id":'ee-zones',
         "source":'eez-boundary',
+        "source-layer":"eez-boundary",
         "type":"line",
         "paint":{
             "line-color":"#d3e289",
@@ -75,13 +76,14 @@ map.on("load", function(e) {
     });
 
     map.addSource('archipelagic-waters', {
-        "type":"geojson",
-        "data":{"type":"FeatureCollection", "features":[]}
+        "type":"vector",
+        "url":"mapbox://bldgit13.archipelagic-waters"
     });
 
     map.addLayer({
         "id":'archipelagic-waters',
         "source":'archipelagic-waters',
+        "source-layer":"archipelagic-waters",
         "type":"fill",
         "paint":{
             "fill-color":"#d3e289",
@@ -92,13 +94,14 @@ map.on("load", function(e) {
     });
 
     map.addSource('eez-24nm', {
-        "type":"geojson",
-        "data":{"type":"FeatureCollection", "features":[]}
+        "type":"vector",
+        "url":"mapbox://bldgit13.eez-24nm"
     });
 
     map.addLayer({
         "id":'eez-24nm',
         "source":'eez-24nm',
+        "source-layer":"eez-24nm",
         "type":"fill",
         "paint":{
             "fill-color":"#ff7f00",
@@ -109,13 +112,14 @@ map.on("load", function(e) {
     });
 
     map.addSource('eez-12nm', {
-        "type":"geojson",
-        "data":{"type":"FeatureCollection", "features":[]}
+        "type":"vector",
+        "url":"mapbox://bldgit13.eez-12nm"
     });
 
     map.addLayer({
         "id":'eez-12nm',
         "source":'eez-12nm',
+        "source-layer":"eez-12nm",
         "type":"fill",
         "paint":{
             "fill-color":"#984ea3",
@@ -125,6 +129,46 @@ map.on("load", function(e) {
         }
     });
 
+    // IHO Waters
+    map.addSource('iho-seas', {
+        "type":"geojson",
+        "data":{
+            "type":"FeatureCollection",
+            "features":[]
+         }
+    });
+
+    map.addLayer({
+        "id":'iho-seas',
+        "source":'iho-seas',
+        // "source-layer":"iho-seas",
+        "type":"fill",
+        "paint":{
+            "fill-color":"#984ea3",
+        },
+        "layout":{
+            "visibility":"none"
+        }
+    });
+
+    // internal Waters
+    map.addSource('internal-waters', {
+        "type":"vector",
+        "url":"mapbox://bldgit13.internal-waters"
+    });
+
+    map.addLayer({
+        "id":'internal-waters',
+        "source":'internal-waters',
+        "source-layer":"internal-waters",
+        "type":"fill",
+        "paint":{
+            "fill-color":"#5964d6",
+        },
+        "layout":{
+            "visibility":"none"
+        }
+    });
 
       // load articles data
     let ARTICLE_URL = "https://staging-praesidiumintl.kinsta.cloud/wp-json/jet-cct/mare/?_orderby=_ID&_order=desc&_ordertype=integer";
@@ -143,59 +187,58 @@ map.on("load", function(e) {
         console.error(error);
     });
 
-    // get ee boundary
-    fetch("https://davincikab.github.io/marine_incidences/eez_boundary.pbf")
-    .then(res => res.arrayBuffer())
-    .then(data => {
-        console.log(data);
-
-        var geojson = geobuf.decode(new Pbf(data));
-        // console.log(geojson);
-        map.getSource("eez-boundary").setData(geojson);
-    })
-    .catch(error => {
-        console.log(error);
-    });
-
-    // get archipelagic waters
-    fetch("https://davincikab.github.io/marine_incidences/archipelagic_waters.pbf")
+    // // get iho-seas data
+    fetch("https://davincikab.github.io/marine_incidences/iho_seas.pbf")
     .then(res => res.arrayBuffer())
     .then(data => {
         var geojson = geobuf.decode(new Pbf(data));
 
         // console.log(geojson);
-        map.getSource("archipelagic-waters").setData(geojson);
+        map.getSource("iho-seas").setData(geojson);
     })
     .catch(error => {
         console.log(error);
     });
 
+    // get internal waters boundary
+    // fetch("https://davincikab.github.io/marine_incidences/internal_waters.pbf")
+    // .then(res => res.arrayBuffer())
+    // .then(data => {
+    //     console.log(data);
 
-    // get ee_24nm data
-    fetch("https://davincikab.github.io/marine_incidences/eez_24nm.pbf")
-    .then(res => res.arrayBuffer())
-    .then(data => {
-        var geojson = geobuf.decode(new Pbf(data));
+    //     var geojson = geobuf.decode(new Pbf(data));
+    //     // console.log(geojson);
+    //     map.getSource("internal-waters").setData(geojson);
+    // })
+    // .catch(error => {
+    //     console.log(error);
+    // });
 
-        // console.log(geojson);
-        map.getSource("eez-24nm").setData(geojson);
-    })
-    .catch(error => {
-        console.log(error);
-    });
+    // // get archipelagic waters
+    // fetch("https://davincikab.github.io/marine_incidences/archipelagic_waters.pbf")
+    // .then(res => res.arrayBuffer())
+    // .then(data => {
+    //     var geojson = geobuf.decode(new Pbf(data));
 
-     // get ee_12nm data
-     fetch("https://davincikab.github.io/marine_incidences/eez_12nm.pbf")
-     .then(res => res.arrayBuffer())
-     .then(data => {
-         var geojson = geobuf.decode(new Pbf(data));
+    //     // console.log(geojson);
+    //     map.getSource("archipelagic-waters").setData(geojson);
+    // })
+    // .catch(error => {
+    //     console.log(error);
+    // });
+
+    //  // get ee_12nm data
+    //  fetch("https://davincikab.github.io/marine_incidences/eez_12nm.pbf")
+    //  .then(res => res.arrayBuffer())
+    //  .then(data => {
+    //      var geojson = geobuf.decode(new Pbf(data));
  
-         // console.log(geojson);
-         map.getSource("eez-12nm").setData(geojson);
-     })
-     .catch(error => {
-         console.log(error);
-     });
+    //      // console.log(geojson);
+    //      map.getSource("eez-12nm").setData(geojson);
+    //  })
+    //  .catch(error => {
+    //      console.log(error);
+    //  });
 });
 
    // markers
