@@ -32,8 +32,9 @@
 
         .logo-div {
             position: absolute;
-            bottom: 3%;
-            left: 3%;
+            bottom: 3.5%;
+            z-index: 2;
+            left: 5%;
         }
 
         .logo-div img {
@@ -196,7 +197,7 @@
             margin: 0;
         }
 
-        .form-group {
+        #date-tab .form-group {
             display: flex;
             flex-direction: column;
         }
@@ -293,12 +294,12 @@
 
         /* button */
         .btn {
-            background-color: #0773b4;
-            padding: 0em 0.5rem;
-            border: 1px solid #0773b4;
+            background-color: #323b4a;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #323b4a;
             font-size: 16px;
             color: white;
-            border-radius: 8px;
+            border-radius: 2px;
             margin: 0.5em 0;
         }
 
@@ -413,7 +414,19 @@
             display: none;
         }
 
+        /* utils */
+        .d-none {
+            display: none !important;
+        }
+
         @media screen and (max-width:768px){
+            .logo-div {
+                position: absolute;
+                bottom: 3%;
+                z-index: 2;
+                left: calc(7% + 1vw);
+            }
+
             .container {
                 display: block;
             }
@@ -425,7 +438,7 @@
 
             .side-tab {
                 display: none;
-                width: 30%;
+                /* width: 30%; */
                 height: 100vh;
                 position: absolute;
                 z-index: 3;
@@ -442,11 +455,11 @@
                 height: 100vh;
             }
 
-            .filter-tab {
+            .filter-tab {    
                 position: absolute;
-                top: 20%;
-                right: 35%;
-                height: 40%;
+                top: 2%;
+                right: 10%;
+                height: 90vh;
                 width: 350px;
                 display: none;
                 background-color: #193341;
@@ -465,6 +478,13 @@
         }
 
         @media screen and (max-width:480px){
+            .logo-div {
+                position: absolute;
+                bottom: 4%;
+                z-index: 2;
+                left: calc(13% + 1vw);
+            }
+
             .container {
                 display: block;
             }
@@ -476,7 +496,7 @@
 
             .side-tab {
                 display: none;
-                width: 50%;
+                /* width: 50%; */
                 height: 100vh;
                 position: absolute;
                 z-index: 3;
@@ -495,10 +515,11 @@
 
             .filter-tab {
                 position: absolute;
-                top: 23%;
-                right: 2%;
-                height: 40%;
-                width: 350px;
+                top: 2%;
+                height: 90vh;
+                width: auto;
+                left: 5%;
+                right: 70px;
                 display: none;
                 background-color: var(--gray);
                 z-index: 2;
@@ -519,9 +540,9 @@
 <body>
     <div class="container" id="container">
         <!--  -->
-        <div class="toggle-side-tab filter-item" id="open-side-tab">
+        <!-- <div class="toggle-side-tab filter-item" id="open-side-tab">
             <i class="fa fa-bars"></i>
-        </div>
+        </div> -->
 
         <!--  -->
         <div class="logo-div">
@@ -531,9 +552,9 @@
         <div id='map'></div>
 
         <div class="side-tab" id="side-tab">
-            <span role="button" class="close-btn" id="close-side-tab">
+            <!-- <span role="button" class="close-btn" id="close-side-tab">
                 <i class="fa fa-times"></i>
-            </span>
+            </span> -->
 
             <div class="filter-item" id="open-layer-tab">
                 <span role="button" class="" >
@@ -613,14 +634,13 @@
         </div>
 
         <div class="filter-tab" id="date-tab">
-            <h3 class="tab-title">Date Filter</h3>
+            <h3 class="tab-title">Date Range Filter</h3>
 
             <span role="button" class="close-btn" id="close-date-tab">
                 <i class="fa fa-times"></i>
             </span>
 
             <div class="filter-body">
-                <p>Reported Between</p>
                 <div class="date-filter">
                     <div class="form-group">
                         <label for="from-date">From</label>
@@ -633,8 +653,8 @@
                 </div>
 
                 <div class="d-flex">
-                    <button class="btn btn-outline-white" id="clear-filter">Clear</button>
-                    <button class="btn btn-outline-primary" id="apply-filter">Apply</button>
+                    <button class="btn d-none" id="clear-filter">Clear</button>
+                    <button class="btn" id="apply-filter">Apply</button>
                 </div>
             </div>
         </div>
@@ -679,6 +699,9 @@
             </span>
 
             <h3 class="tab-title">Countries</h3> 
+
+            <div class="filter-body" id="countries">
+            </div>
         </div>
 
         <!-- filter tab -->

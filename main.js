@@ -1,4 +1,4 @@
-var articles, incidents, articleMarkers = [];
+var articles, incidents, articleMarkers = countriesr = [];
 var listingDiv = document.getElementById("listing-div");
 var mapWrapperContainer = document.getElementById("container");
 
@@ -205,8 +205,13 @@ map.on("load", function(e) {
         incidents = data.filter(article => new Date(article.cct_created) > filterDate);
         let incidentCount = document.getElementById("incident-count");
         incidentCount.innerHTML = "Incidents: "  + incidents.length;
-
         createAlertListing(incidents);
+
+        // get the countries 
+        countries = [...new Set(data.map(article => article.country))];
+        renderCountryFilter(countries);
+        
+       
 
         // incidents
         var incidentGeojson = createGeojson(data);
@@ -237,6 +242,19 @@ function createMarker(item) {
     // get icon
     let icon = getCategorizeMarker(item.category);
     var markerIcon = document.createElement("div");
+
+
+    markerIcon.addEventListener("mouseover", function(e) {
+        markerIcon.style.height = "13px";
+        markerIcon.style.width = "13px";
+    });
+
+    markerIcon.addEventListener("mouseout", function(e) {
+        markerIcon.style.height = "4px";
+        markerIcon.style.width = "4px";
+    });
+
+
     markerIcon.style.backgroundColor = item.bg_color;
 
     markerIcon.classList.add("div-marker");
@@ -449,6 +467,8 @@ openLayerTab.addEventListener("click", function(e) {
     this.classList.add('active');
 });
 
+// countries tab
+
 // incident tab
 var incidentsType = [
     {name:'Sea Robbery', bg_color:"#ffff00"},
@@ -493,17 +513,17 @@ incidentTypeCheckbox.forEach( incident => {
             activeIncidentType = activeIncidentType.filter(incident => incident != name);
        }
 
-    // filter
-    let incidents = activeIncidentType.map(activeIncident => {
-        let articleFilter = articles.filter(article => article.category.includes(activeIncident));
+        // filter
+        let incidents = activeIncidentType.map(activeIncident => {
+            let articleFilter = articles.filter(article => article.category.includes(activeIncident));
 
-        return articleFilter;
-    }).reduce((a, b) => [...a, ...b], []);
+            return articleFilter;
+        }).reduce((a, b) => [...a, ...b], []);
 
-    console.log(incidents);
+        console.log(incidents);
 
-    clearMarkers();
-    createCategoryMarkers(incidents);
+        clearMarkers();
+        createCategoryMarkers(incidents);
 
     });
 });
@@ -620,6 +640,48 @@ closeCountryTab.addEventListener("click", function(e) {
     this.classList.add('active');
 });
 
+var activeCountries = [];
+function renderCountryFilter(countries) {
+    let countryDiv = document.getElementById("countries");
+    // create form group
+    countries.forEach(country => {
+        let element = `<div class="form-group">
+            <input type="checkbox" name="${country}" id="${country}" class="country-filter">
+            <label for="${country}">${country}</label>
+        </div>`;
+
+        countryDiv.innerHTML += element;
+    });
+
+    let countryFilters = document.querySelectorAll(".country-filter");
+
+    countryFilters.forEach(countryFilter => {
+        countryFilter.addEventListener("change", function(e) {
+            let { name, checked } = e.target;
+
+            if(checked) {
+                activeCountries.push(name);
+            } else {
+                activeCountries = activeCountries.filter(incident => incident != name);
+            }
+
+            // filter
+            let countryIncidence = activeCountries.map(activeCountry => {
+                let articleFilter = articles.filter(article => article.country.includes(activeCountry));
+    
+                return articleFilter;
+            }).reduce((a, b) => [...a, ...b], []);
+    
+            console.log(countryIncidence);
+
+            clearMarkers();
+            createCategoryMarkers(countryIncidence);
+        });
+    });
+
+
+}
+
 // toggle layers
 var layersCheckbox = document.querySelectorAll(".form-group input[type=checkbox]");
 layersCheckbox.forEach(layer => {
@@ -684,18 +746,18 @@ fullScreenButton.addEventListener("click", function(e) {
 });
 
 // toggle sidebar
-var sideBar = document.getElementById("side-tab");
-var openSideTab = document.getElementById("open-side-tab");
-var closeSideTab = document.getElementById("close-side-tab");
+// var sideBar = document.getElementById("side-tab");
+// var openSideTab = document.getElementById("open-side-tab");
+// var closeSideTab = document.getElementById("close-side-tab");
 
-openSideTab.addEventListener("click", function(e) {
-    console.log("Opening");
-    sideBar.style.display = "block";
-});
+// openSideTab.addEventListener("click", function(e) {
+//     console.log("Opening");
+//     sideBar.style.display = "block";
+// });
 
-closeSideTab.addEventListener("click", function(e) {
-    sideBar.style.display = "none";
-});
+// closeSideTab.addEventListener("click", function(e) {
+//     sideBar.style.display = "none";
+// });
 
 
 // Toggle filter item
