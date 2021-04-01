@@ -1,5 +1,6 @@
 var articles, incidents, articleMarkers = [];
 var listingDiv = document.getElementById("listing-div");
+var mapWrapperContainer = document.getElementById("container");
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGF1ZGk5NyIsImEiOiJjanJtY3B1bjYwZ3F2NGFvOXZ1a29iMmp6In0.9ZdvuGInodgDk7cv-KlujA';
 var map = new mapboxgl.Map({
@@ -14,7 +15,11 @@ var map = new mapboxgl.Map({
 
 // navigation control
 map.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
+
+// full screen control
+var fullScreenControl = new mapboxgl.FullscreenControl();
  
+// era boundary
 var eraBoundary = {
     "type": "FeatureCollection",
     "name": "era",
@@ -192,7 +197,16 @@ map.on("load", function(e) {
 
         // sort the data by cc_created
         data = data.sort((a, b) => new Date(a.cct_created) < new Date(b.cct_created));
-        createAlertListing(data.slice(0, 5));
+
+        // Incidents in the past week
+        let oneWeekInMs = 1000 * 60 * 60 * 24 * value;
+        let filterDate = new Date(new Date() - oneWeekInMs);
+
+        incidents = data.filter(article => new Date(article.cct_created) > filterDate);
+        let incidentCount = document.getElementById("incident-count");
+        incidentCount.innerHTML = "Incidents: "  + incidents.length;
+
+        createAlertListing(incidents);
 
         // incidents
         var incidentGeojson = createGeojson(data);
@@ -269,10 +283,14 @@ function createAlertListItem(alert) {
     listItem.setAttribute("data-ID", alert._ID);
 
     // add text content
-    listItem.innerHTML = alert.title;
+    listItem.innerHTML += "<span class='dot' style='background-color:"+ alert.bg_color+"'></span>";
+    listItem.innerHTML += alert.country + " " + alert.title;
 
     // add interactivity
     listItem.addEventListener("click", function(e) {
+        // stop event propagation to the map
+        e.stopPropagation();
+
         // get id attribute
         let alertId = this.getAttribute("data-ID");
         zoomToAlert(alertId);
@@ -429,8 +447,6 @@ openLayerTab.addEventListener("click", function(e) {
 
     layerTab.style.display = "block";
     this.classList.add('active');
-
-    filterTab.style.display = "none";
 });
 
 // incident tab
@@ -477,6 +493,40 @@ closeIncidentTab.addEventListener("click", function(e) {
     console.log("Home coming");
     incidentTab.style.display = "none";
     this.classList.add('active');
+});
+
+
+var incidentSelectDate = document.getElementById("alert-date");
+var incidentCount = document.getElementById("incident-count");
+var toggleIncidents = document.getElementById("show-incidents");
+
+incidentSelectDate.addEventListener("change", function(e) {
+    let value = e.target.value;
+    value = parseInt(value, 10);
+
+    let valueInMs = 1000 * 60 * 60 * 24 * value;
+    var filterDate = new Date(new Date() - valueInMs);
+
+    // call the filter function
+    incidents = articles.filter(article => new Date(article.cct_created) > filterDate);
+    listingDiv.innerHTML = "";
+    incidentCount.innerHTML = "Incidents: " + incidents.length;
+
+    createAlertListing(incidents);
+
+});
+
+toggleIncidents.addEventListener("change", function(e) {
+    let { checked } = e.target;
+
+    if(checked) {
+        // display the incidents
+        clearMarkers();
+        createCategoryMarkers(incidents);
+    } else {
+        clearMarkers();
+        createCategoryMarkers(articles);
+    }
 });
 
 // date tab and incident tab
@@ -582,6 +632,25 @@ openAttributionButton.addEventListener("click", function(e) {
 });
 
 
+// refresh the map
+var refreshButton = document.getElementById("refresh-map");
+refreshButton.addEventListener("click", function(e) {
+    console.log("Reloading");
+    window.location.reload();
+});
+
+
+// full screen view
+var fullScreenButton = document.getElementById("full-screen-mode");
+fullScreenButton.addEventListener("click", function(e) {
+    if(document.fullscreenEnabled) {
+        if(document.fullscreenElement) {
+            document.exitFullscreen();
+        }  else {
+            mapWrapperContainer.requestFullscreen();
+        }
+    }
+});
 
 // toggle sidebar
 var sideBar = document.getElementById("side-tab");

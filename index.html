@@ -268,7 +268,7 @@
             align-items: center;
         }
 
-        .form-group .dot {
+        .form-group .dot, .list-item .dot{
             height: 12px;
             width: 12px;
             border-radius: 50%;
@@ -283,7 +283,7 @@
 
         /* alerts tab */
         #alerts-tab {
-            height: 400px;
+            /* height: 400px; */
         }
 
         /* country tab */
@@ -358,6 +358,34 @@
             overflow-y: scroll;
         }
 
+        .summary-div {
+            display: flex;
+            align-items: center;
+            border: 2px solid #323b4a;
+            font-size: 1rem;
+            justify-content: space-between;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .summary-div p {
+            margin:0;
+        }
+
+        .input-group {
+            display: flex;
+            font-size: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .input-group .input-group-prepend {
+            background: #323b4a;
+            padding: 0.25rem;
+        }
+
+        .input-group > select {
+            width: 100%;
+        }
+
         #listing-div {
             margin: 0.2em 0;
             height: 300px;
@@ -367,10 +395,12 @@
         .list-item {
             color: white;
             cursor: pointer;
-            /* box-shadow: 2px 2px 0.3em #202c35; */
-            margin: 0.4em 0em;
+            margin: 0.75em 0em;
             font-size: 0.75rem;
-            border-bottom: 1px solid white;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+            /* border-bottom: 1px solid white; */
         }
 
         .toggle-side-tab {
@@ -487,7 +517,7 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="container">
         <!--  -->
         <div class="toggle-side-tab filter-item" id="open-side-tab">
             <i class="fa fa-bars"></i>
@@ -543,7 +573,7 @@
             </div>
 
             <div class="bottom-section">
-                <div class="filter-item" id="full-size-mode">
+                <div class="filter-item" id="full-screen-mode">
                     <span role="button" class="" >
                         <img src="images/full-size.png" alt="">
                     </span>
@@ -615,7 +645,28 @@
                 <i class="fa fa-times"></i>
             </span>
 
-            <h3 class="tab-title">Last Alerts</h3> 
+            <h3 class="tab-title">Last Alerts</h3>
+            
+            <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Show</span>
+                </div>
+                <select name="" id="alert-date">
+                    <option value="7">One Weeks</option>
+                    <option value="14">Two Weeks</option>
+                    <option value="30">One Month</option>
+                    <option value="180">Six Months</option>
+                    <option value="365">One year</option>
+                </select>
+            </div>
+
+            <div class="summary-div">
+                <p id="incident-count">Incidents: 0</p>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="show-incidents">
+                    <label class="custom-control-label" for="customSwitch1">Show on map</label>
+                </div>
+            </div>
             <div id="listing-div">
 
             </div>
