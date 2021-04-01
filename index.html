@@ -16,11 +16,13 @@
         body {
             padding: 0;
             margin: 0;
+            font-size: 10px;
         }
 
         .container {
             display: flex;
             background-color: #323B4A;
+            font-family: Verdana,Helvetica,Arial,sans-serif !important;
         }
 
         #map {
@@ -28,53 +30,75 @@
             height: 100vh;
         }
 
+        .logo-div {
+            position: absolute;
+            bottom: 3%;
+            left: 3%;
+        }
+
+        .logo-div img {
+            width: 200px;
+            height: 80px;
+        }
+
         .side-tab {
-            box-shadow: 2px 2px 0.2em #ddd;
+            box-shadow: 2px 2px 0.6em #0c0c0c;
             background-color: #323B4A;
-            padding:0.25em;
+            padding:0em;
             font-size: 16px;
-            width: 20%;
+            width: 60px;
             height: auto;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
         }
 
         .filter-item {
-            background-color: var(--light-gray);
-            padding:6px 3px;
-            border-radius: 3px;
+            border-bottom: 2px solid var(--light-gray);
+            padding:0.6em 3px;
             cursor: pointer;
-            width: 28px;
+            width: 100%;
             color:var(--white);
             text-align: center;
+            font-size: 1.4em;
         }
 
-        .filter-item {
-            margin:0.5em 0;
+        .filter-item img {
+            width: 24px;
+            height: 24px;
         }
 
-        .filter-item:focus, .filter-item:hover {
-            background-color: var(--white);
+        .filter-item.active, .filter-item:focus, .filter-item:hover {
+            background-color: #29768A;
             color:var(--gray)
+        }
+
+        .bottom-section {
+            position:absolute;
+            bottom: 0%;
+            width: 60px;
         }
 
         .filter-tab {
             position: absolute;
-            top:20%;
-            right:20%;
-            height: 40%;
-            width: 350px;
+            padding: 5px 15px;
+            top:15%;
+            right:57px;
+            height: auto;
+            width: 300px;
             display: none;
-            background-color: var(--gray);
-            z-index: 2;
+            background: linear-gradient(137deg, #6ab6cb 0%, #51a7b6 20%, #29768a 40%, #2c5a71 72%, #2c5a71 100%);
+            z-index: 1;
             box-shadow: 2px 2px 0.5em var(--gray2);
             color:var(--white);
             overflow: hidden;
         }
 
         .filter-header {
-            background-color: var(--gray2);
+            background-color: transparent;
             height: 30px;
             width: 100%;
             display: flex;
@@ -83,11 +107,17 @@
             position: relative;
         }
 
-        .filter-header .close-btn {
+        .tab-title {
+            font-size: 1.5rem;
+        }
+
+        .filter-tab .close-btn {
             position: absolute;
-            top: 20%;
+            top: 1%;
             right: 3%;
             cursor: pointer;
+            right: 2%;
+            font-size: 1rem;
         }
 
         .filter-header .fa {
@@ -107,8 +137,10 @@
 
         .article-title {
             margin:03px 0;
-            font-size: 16px;
             font-style: italic;
+            font-size: 0.7rem;
+            font-weight: 600;
+            font-family: Verdana,Helvetica,Arial,sans-serif !important;
         }
 
         .article-title a {
@@ -195,18 +227,68 @@
         /* layer tab */
         #layer-tab {
             display: none;
+            padding: 5px 15px;
             font-size: 16px;
+            top: 0%;
         }
 
         #layer-tab .form-group {
             flex-direction: row !important;
             margin:0.2em 0.5em;
             align-items: center;
-            font-size: 16px;
+            /* font-size: 16px; */
+            /* font-size: 1.4rem;  */
+            font-family: "Open Sans", "Helvetica", "Arial", sans-serif; 
+            font-weight: 400; 
+            line-height: 1.42857;
         }
 
-        #layer-tab .form-group label {
+        .form-group label {
             margin-left: 8px;
+            font-size: 0.9rem;
+        }
+
+        #layer-tab .form-group.active, #layer-tab .form-group:hover {
+            background-color: #20374C;
+        }
+
+        /* vessel tab */
+        #vessel-tab {
+            height: 400px;
+        }
+
+        /* incidents tab */
+        #incident-tab {
+            height: 400px;
+        }
+
+        #incident-tab .filter-body .form-group {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .form-group .dot {
+            height: 12px;
+            width: 12px;
+            border-radius: 50%;
+            background-color: black;
+            margin:0 0.5rem;
+        }
+
+        /* date tab */
+        #date-tab {
+            height: 400px;
+        }
+
+        /* alerts tab */
+        #alerts-tab {
+            height: 400px;
+        }
+
+        /* country tab */
+        #country-tab {
+            height: 400px;
         }
 
         /* button */
@@ -272,19 +354,23 @@
         #info-tab {
             padding: 0 8px;
             height: 60%;
+            font-size: 0.75rem;
+            overflow-y: scroll;
         }
 
         #listing-div {
             margin: 0.2em 0;
-            height: 70vh;
+            height: 300px;
             overflow-y: scroll;
         }
 
         .list-item {
             color: white;
             cursor: pointer;
-            box-shadow: 2px 2px 0.3em #202c35;
+            /* box-shadow: 2px 2px 0.3em #202c35; */
             margin: 0.4em 0em;
+            font-size: 0.75rem;
+            border-bottom: 1px solid white;
         }
 
         .toggle-side-tab {
@@ -333,9 +419,9 @@
                 height: 40%;
                 width: 350px;
                 display: none;
-                background-color: var(--gray);
+                background-color: #193341;
                 z-index: 2;
-                box-shadow: 2px 2px 0.5em var(--gray2);
+                box-shadow: 1px 1px 0.5em #09090b;
                 color: var(--white);
                 overflow: hidden;
             }
@@ -407,6 +493,11 @@
             <i class="fa fa-bars"></i>
         </div>
 
+        <!--  -->
+        <div class="logo-div">
+            <img src="images/logo.png" alt="">
+        </div>
+        <!--  -->
         <div id='map'></div>
 
         <div class="side-tab" id="side-tab">
@@ -414,167 +505,257 @@
                 <i class="fa fa-times"></i>
             </span>
 
-            <div class="filter-item" id="open-filter">
-                <span role="button" class="" >
-                    <i class="fa fa-filter"></i>
-                </span>
-            </div>
-
             <div class="filter-item" id="open-layer-tab">
                 <span role="button" class="" >
-                    <i class="fa fa-th-list"></i>
+                    <img src="images/layers.png" alt="">
                 </span>
             </div>
 
-            <div class="filter-item" id="open-info-tab">
+            <div class="filter-item" id="open-vessel-tab">
                 <span role="button" class="" >
-                    <i class="fa fa-info"></i>
+                    <img src="images/ship-front-view.png" alt="">
                 </span>
             </div>
 
-            <div id="listing-div">
-
+            <div class="filter-item" id="open-incident-tab">
+                <span role="button" class="" >
+                    <img src="images/filter.png" alt="">
+                </span>
             </div>
 
-            <div class="filter-tab" id="filter-tab">
-                <div class="filter-header">
-                    <span>
-                        <i class="fa fa-filter"></i>
-                    </span>
+            <div class="filter-item" id="open-date-filter">
+                <span role="button" class="" >
+                    <img src="images/calendar.png" alt="">
+                </span>
+            </div>
 
-                    <span>Incident Filter / Search</span>
+        
+            <div class="filter-item" id="open-alerts-tab">
+                <span role="button" class="" >
+                    <img src="images/danger.png" alt="">
+                </span>
+            </div>
 
-                    <span role="button" class="close-btn" id="close-filter">
-                        <i class="fa fa-times"></i>
+            <div class="filter-item" id="open-country-tab">
+                <span role="button" class="" >
+                    <img src="images/placeholder.png" alt="">
+                </span>
+            </div>
+
+            <div class="bottom-section">
+                <div class="filter-item" id="full-size-mode">
+                    <span role="button" class="" >
+                        <img src="images/full-size.png" alt="">
                     </span>
                 </div>
 
-                <div class="filter-body">
-                    <p>Reported Between</p>
-                    <div class="date-filter">
-                        <div class="form-group">
-                            <label for="from-date">From</label>
-                            <input type="date" name="from" id="from-date" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="to-date">To</label>
-                            <input type="date" name="to" id="to-date" class="form-control">
-                        </div>
+                <div class="filter-item" id="refresh-map">
+                    <span role="button" class="" >
+                        <img src="images/refresh.png" alt="">
+                    </span>
+                </div>
+
+                <div class="filter-item" id="open-info-tab">
+                    <span role="button" class="" >
+                        <img src="images/info.png" alt="">
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="filter-tab" id="vessel-tab">
+            <h3 class="tab-title">Vessel Filter</h3>
+            <span role="button" class="close-btn" id="close-vessel-tab">
+                <i class="fa fa-times"></i>
+            </span>
+        </div>
+
+        <div class="filter-tab" id="incident-tab">
+            <span role="button" class="close-btn" id="close-incident-tab">
+                <i class="fa fa-times"></i>
+            </span>
+
+            <h3 class="tab-title">Incident Type</h3>
+
+            <div class="filter-body" id="incidences">
+            </div>
+        </div>
+
+        <div class="filter-tab" id="date-tab">
+            <h3 class="tab-title">Date Filter</h3>
+
+            <span role="button" class="close-btn" id="close-date-tab">
+                <i class="fa fa-times"></i>
+            </span>
+
+            <div class="filter-body">
+                <p>Reported Between</p>
+                <div class="date-filter">
+                    <div class="form-group">
+                        <label for="from-date">From</label>
+                        <input type="date" name="from" id="from-date" class="form-control">
                     </div>
-
-                    <div class="d-flex">
-                        <button class="btn btn-outline-white" id="clear-filter">Clear</button>
-                        <button class="btn btn-outline-primary" id="apply-filter">Apply</button>
+                    <div class="form-group">
+                        <label for="to-date">To</label>
+                        <input type="date" name="to" id="to-date" class="form-control">
                     </div>
                 </div>
-            </div>
 
-            <div class="filter-tab" id="layer-tab">
-                <div class="filter-header">
-                    <span>
-                        <i class="fa fa-filter"></i>
-                    </span>
-
-                    <span>Incident Filter / Search</span>
-
-                    <span role="button" class="close-btn" id="close-layer-tab">
-                        <i class="fa fa-times"></i>
-                    </span>
-                </div>
-
-                <div class="form-group">
-                    <input type="checkbox" name="articles" id="articles" checked>
-                    <label for="inputState">M.A.R.E</label>
-                </div>
-
-                <div class="form-group">
-                    <input type="checkbox" name="incidents" id="incidents">
-                    <label for="inputState">Incidents</label>
-                </div>
-
-                <div class="form-group">
-                    <input type="checkbox" name="ee-zones" id="ee-zones">
-                    <label for="inputState">Exclusive Economic Zones </label>
-                </div>
-
-                <div class="form-group">
-                    <input type="checkbox" name="eez-24nm" id="eez-24nm">
-                    <label for="inputState">Contiguous Zones (24NM) </label>
-                </div>
-
-                <div class="form-group">
-                    <input type="checkbox" name="eez-12nm" id="eez-12nm">
-                    <label for="inputState">Territorial Seas (12NM) </label>
-                </div>
-
-                <div class="form-group">
-                    <input type="checkbox" name="internal-waters" id="internal-waters">
-                    <label for="inputState">Internal Waters </label>
-                </div>
-
-                <div class="form-group">
-                    <input type="checkbox" name="archipelagic-waters" id="archipelagic-waters">
-                    <label for="inputState">Archipelagic Waters</label>
-                </div>
-
-                <div class="form-group">
-                    <input type="checkbox" name="iho-seas" id="iho-seas">
-                    <label for="inputState">IHO Sea Areas</label>
-                </div>
-            </div>
-
-            <!-- Attribution -->
-            <div class="filter-tab" id="info-tab">
-                <div class="filter-header">
-                    <span>
-                        <i class="fa fa-info"></i>
-                    </span>
-
-                    <span>Attribution</span>
-
-                    <span role="button" class="close-btn" id="close-info-tab">
-                        <i class="fa fa-times"></i>
-                    </span>
-                </div>
-                <div class="">
-                    <p class="attribution">
-                        Flanders Marine Institute (2019). Maritime Boundaries Geodatabase: Maritime Boundaries and Exclusive Economic Zones (200NM), version 11. 
-                        Available online at <a href="https://www.marineregions.org/">here</a> . <a href="https://doi.org/10.14284/386">DOI</a>.
-                    </p>
-
-                    <p class="attribution">
-                        Flanders Marine Institute (2019). Maritime Boundaries Geodatabase: Contiguous Zones (24NM), version 3.
-                        Available online at <a href="https://www.marineregions.org/">here</a> . <a href="https://doi.org/10.14284/384">DOI</a>.
-                    </p>
-
-                    <p class="attribution">
-                        Flanders Marine Institute (2019). Maritime Boundaries Geodatabase: Territorial Seas (12NM), version 3
-                        Available online at <a href="https://www.marineregions.org/">here</a> . <a href="https://doi.org/10.14284/387">DOI</a>.
-                    </p>
-
-                    <p class="attribution">
-                        Flanders Marine Institute (2019). Maritime Boundaries Geodatabase: Internal Waters, version 3 
-                        Available online at <a href="https://www.marineregions.org/">here</a> . <a href=" https://doi.org/10.14284/385">DOI</a>.
-                    </p>
-
-                    <p class="attribution">
-                        Flanders Marine Institute (2019). Maritime Boundaries Geodatabase: Archipelagic Waters, version 3. 
-                        Available online at <a href="https://www.marineregions.org/">here</a> . <a href="https://doi.org/10.14284/383">DOI</a>.
-                    </p>
-
-                    <p class="attribution">
-                        Flanders Marine Institute (2018). IHO Sea Areas, version 3.
-                        Available online at <a href="https://www.marineregions.org/">here</a> . <a href="https://doi.org/10.14284/323">DOI</a>.
-                    </p>
-
-
+                <div class="d-flex">
+                    <button class="btn btn-outline-white" id="clear-filter">Clear</button>
+                    <button class="btn btn-outline-primary" id="apply-filter">Apply</button>
                 </div>
             </div>
         </div>
-    </div>
-    
+
+        <!-- last alerts -->
+        <div class="filter-tab" id="alerts-tab">
+            <span role="button" class="close-btn" id="close-alerts-tab">
+                <i class="fa fa-times"></i>
+            </span>
+
+            <h3 class="tab-title">Last Alerts</h3> 
+            <div id="listing-div">
+
+            </div>
+        </div>
+
+        <!-- country filter -->
+        <div class="filter-tab" id="country-tab">
+            <span role="button" class="close-btn" id="close-country-tab">
+                <i class="fa fa-times"></i>
+            </span>
+
+            <h3 class="tab-title">Countries</h3> 
+        </div>
+
+        <!-- filter tab -->
+        <div class="filter-tab" id="layer-tab">
+            <!-- <div class="filter-header">
+                <span>
+                    <i class="fa fa-filter"></i>
+                </span>
+
+                <span>Incident Filter / Search</span> -->
+
+                <span role="button" class="close-btn" id="close-layer-tab">
+                    <i class="fa fa-times"></i>
+                </span>
+            <!-- </div> -->
+
+            <h3 class="tab-title" style="font-size: 22px; color: #ffffff; margin-top: 0;">Map Layers</h3>
+            <div class="form-group active">
+                <input type="checkbox" name="articles" id="articles" checked>
+                <label for="inputState">M.A.R.E</label>
+            </div>
+
+            <div class="form-group active">
+                <input type="checkbox" name="incidents" id="incidents" checked>
+                <label for="inputState">Incidents</label>
+            </div>
+
+            <div class="form-group">
+                <input type="checkbox" name="ee-zones" id="ee-zones">
+                <label for="inputState">Exclusive Economic Zones </label>
+            </div>
+
+            <div class="form-group">
+                <input type="checkbox" name="eez-24nm" id="eez-24nm">
+                <label for="inputState">Contiguous Zones (24NM) </label>
+            </div>
+
+            <div class="form-group">
+                <input type="checkbox" name="eez-12nm" id="eez-12nm">
+                <label for="inputState">Territorial Seas (12NM) </label>
+            </div>
+
+            <div class="form-group">
+                <input type="checkbox" name="internal-waters" id="internal-waters">
+                <label for="inputState">Internal Waters </label>
+            </div>
+
+            <div class="form-group">
+                <input type="checkbox" name="archipelagic-waters" id="archipelagic-waters">
+                <label for="inputState">Archipelagic Waters</label>
+            </div>
+
+            <div class="form-group">
+                <input type="checkbox" name="iho-seas" id="iho-seas">
+                <label for="inputState">IHO Sea Areas</label>
+            </div>
+
+            <div class="form-group">
+                <input type="checkbox" name="security" id="security">
+                <label for="inputState">Security</label>
+            </div>
+
+            <div class="form-group">
+                <input type="checkbox" name="hra" id="hra">
+                <label for="inputState">HRAs</label>
+            </div>
+
+            <div class="form-group">
+                <input type="checkbox" name="jwcs" id="jwcs">
+                <label for="inputState">JWCs</label>
+            </div>
+
+            <div class="form-group">
+                <input type="checkbox" name="vras" id="vras">
+                <label for="inputState">VRAs</label>
+            </div>
+
+            <div class="form-group">
+                <input type="checkbox" name="era" id="era">
+                <label for="inputState">ERA</label>
+            </div>
+        </div>
+
+        <!-- Attribution -->
+        <div class="filter-tab" id="info-tab">
+            <h3 class="tab-title">Attribution</h3>
+
+            <span role="button" class="close-btn" id="close-info-tab">
+                <i class="fa fa-times"></i>
+            </span>
+
+            <div class="">
+                <p class="attribution">
+                    Flanders Marine Institute (2019). Maritime Boundaries Geodatabase: Maritime Boundaries and Exclusive Economic Zones (200NM), version 11. 
+                    Available online at <a href="https://www.marineregions.org/">here</a> . <a href="https://doi.org/10.14284/386">DOI</a>.
+                </p>
+
+                <p class="attribution">
+                    Flanders Marine Institute (2019). Maritime Boundaries Geodatabase: Contiguous Zones (24NM), version 3.
+                    Available online at <a href="https://www.marineregions.org/">here</a> . <a href="https://doi.org/10.14284/384">DOI</a>.
+                </p>
+
+                <p class="attribution">
+                    Flanders Marine Institute (2019). Maritime Boundaries Geodatabase: Territorial Seas (12NM), version 3
+                    Available online at <a href="https://www.marineregions.org/">here</a> . <a href="https://doi.org/10.14284/387">DOI</a>.
+                </p>
+
+                <p class="attribution">
+                    Flanders Marine Institute (2019). Maritime Boundaries Geodatabase: Internal Waters, version 3 
+                    Available online at <a href="https://www.marineregions.org/">here</a> . <a href=" https://doi.org/10.14284/385">DOI</a>.
+                </p>
+
+                <p class="attribution">
+                    Flanders Marine Institute (2019). Maritime Boundaries Geodatabase: Archipelagic Waters, version 3. 
+                    Available online at <a href="https://www.marineregions.org/">here</a> . <a href="https://doi.org/10.14284/383">DOI</a>.
+                </p>
+
+                <p class="attribution">
+                    Flanders Marine Institute (2018). IHO Sea Areas, version 3.
+                    Available online at <a href="https://www.marineregions.org/">here</a> . <a href="https://doi.org/10.14284/323">DOI</a>.
+                </p>
+
+
+            </div>
+        </div>
 
     </div>
+
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
     <script src="https://unpkg.com/pbf@3.0.5/dist/pbf.js"></script>

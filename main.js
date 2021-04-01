@@ -1,16 +1,29 @@
 var articles, incidents, articleMarkers = [];
 var listingDiv = document.getElementById("listing-div");
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiYmxkZ2l0MTMiLCJhIjoiY2ttMzc4NmJ3MWV3YjJ1cW1lbWl3OG4wbiJ9.BxSkkd3BZnJXuxnYcwURog';
+mapboxgl.accessToken = 'pk.eyJ1IjoiZGF1ZGk5NyIsImEiOiJjanJtY3B1bjYwZ3F2NGFvOXZ1a29iMmp6In0.9ZdvuGInodgDk7cv-KlujA';
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/bldgit13/ckmg34nec0elb17mto0vxj6lj',
+    // style: 'mapbox://styles/bldgit13/ckmg34nec0elb17mto0vxj6lj',
+    style:'mapbox://styles/mapbox/dark-v10',
     center: [-7.594081153831553, 14.730749011074153], // master center
     zoom: 2, // master zoom
+    attribution:false,
+    customAttribution:'M.A.R.E'
 });
 
-map.addControl(new mapboxgl.NavigationControl());
-    
+// navigation control
+map.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
+ 
+var eraBoundary = {
+    "type": "FeatureCollection",
+    "name": "era",
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": [
+        { "type":"Feature", "geometry": { "type":"LineString", "coordinates":[[-2.00, 4.75], [-2.00, 4.00], [6.4167, -0.1833], [8.7000, -0.6333]]}}
+    ]
+};
+
 // map load event
 map.on("load", function(e) {
       // load icons
@@ -48,125 +61,125 @@ map.on("load", function(e) {
             ['linear'],
             ['heatmap-density'],
             0, 'rgba(238, 113, 104, 0)',
-            0.2, 'rgba(238, 113, 104, 0.555)',
+            0.2, 'rgba(238, 113, 104, 0.435)',
             0.8, 'rgba(238, 113, 104, 0.855)'
          ],
       },
       "layout":{
-         "visibility":"none"
+         "visibility":"visible"
       }
     });
 
-    map.addSource('eez-boundary', {
-        "type":"vector",
-        "url":"mapbox://bldgit13.eez-boundary"
-    });
+    // map.addSource('eez-boundary', {
+    //     "type":"vector",
+    //     "url":"mapbox://bldgit13.eez-boundary"
+    // });
 
-    map.addLayer({
-        "id":'ee-zones',
-        "source":'eez-boundary',
-        "source-layer":"eez-boundary",
-        "type":"line",
-        "paint":{
-            "line-color":"#d3e289",
-            "line-width":1
-        },
-        "layout":{
-            "visibility":"none"
-        }
-    });
+    // map.addLayer({
+    //     "id":'ee-zones',
+    //     "source":'eez-boundary',
+    //     "source-layer":"eez-boundary",
+    //     "type":"line",
+    //     "paint":{
+    //         "line-color":"#d3e289",
+    //         "line-width":1
+    //     },
+    //     "layout":{
+    //         "visibility":"none"
+    //     }
+    // });
 
-    map.addSource('archipelagic-waters', {
-        "type":"vector",
-        "url":"mapbox://bldgit13.archipelagic-waters"
-    });
+    // map.addSource('archipelagic-waters', {
+    //     "type":"vector",
+    //     "url":"mapbox://bldgit13.archipelagic-waters"
+    // });
 
-    map.addLayer({
-        "id":'archipelagic-waters',
-        "source":'archipelagic-waters',
-        "source-layer":"archipelagic-waters",
-        "type":"fill",
-        "paint":{
-            "fill-color":"#d3e289",
-        },
-        "layout":{
-            "visibility":"none"
-        }
-    });
+    // map.addLayer({
+    //     "id":'archipelagic-waters',
+    //     "source":'archipelagic-waters',
+    //     "source-layer":"archipelagic-waters",
+    //     "type":"fill",
+    //     "paint":{
+    //         "fill-color":"#d3e289",
+    //     },
+    //     "layout":{
+    //         "visibility":"none"
+    //     }
+    // });
 
-    map.addSource('eez-24nm', {
-        "type":"vector",
-        "url":"mapbox://bldgit13.eez-24nm"
-    });
+    // map.addSource('eez-24nm', {
+    //     "type":"vector",
+    //     "url":"mapbox://bldgit13.eez-24nm"
+    // });
 
-    map.addLayer({
-        "id":'eez-24nm',
-        "source":'eez-24nm',
-        "source-layer":"eez-24nm",
-        "type":"fill",
-        "paint":{
-            "fill-color":"#ff7f00",
-        },
-        "layout":{
-            "visibility":"none"
-        }
-    });
+    // map.addLayer({
+    //     "id":'eez-24nm',
+    //     "source":'eez-24nm',
+    //     "source-layer":"eez-24nm",
+    //     "type":"fill",
+    //     "paint":{
+    //         "fill-color":"#ff7f00",
+    //     },
+    //     "layout":{
+    //         "visibility":"none"
+    //     }
+    // });
 
-    map.addSource('eez-12nm', {
-        "type":"vector",
-        "url":"mapbox://bldgit13.eez-12nm"
-    });
+    // map.addSource('eez-12nm', {
+    //     "type":"vector",
+    //     "url":"mapbox://bldgit13.eez-12nm"
+    // });
 
-    map.addLayer({
-        "id":'eez-12nm',
-        "source":'eez-12nm',
-        "source-layer":"eez-12nm",
-        "type":"fill",
-        "paint":{
-            "fill-color":"#984ea3",
-        },
-        "layout":{
-            "visibility":"none"
-        }
-    });
+    // map.addLayer({
+    //     "id":'eez-12nm',
+    //     "source":'eez-12nm',
+    //     "source-layer":"eez-12nm",
+    //     "type":"fill",
+    //     "paint":{
+    //         "fill-color":"#984ea3",
+    //     },
+    //     "layout":{
+    //         "visibility":"none"
+    //     }
+    // });
 
-    // IHO Waters
-    map.addSource('iho-seas', {
-        "type":"vector",
-        "url":"mapbox://bldgit13.iho-seas"
-    });
+    // // IHO Waters
+    // map.addSource('iho-seas', {
+    //     "type":"vector",
+    //     "url":"mapbox://bldgit13.iho-seas"
+    // });
 
-    map.addLayer({
-        "id":'iho-seas',
-        "source":'iho-seas',
-        "source-layer":"iho-seas",
-        "type":"fill",
-        "paint":{
-            "fill-color":"#2facd6",
-        },
-        "layout":{
-            "visibility":"none"
-        }
-    });
+    // map.addLayer({
+    //     "id":'iho-seas',
+    //     "source":'iho-seas',
+    //     "source-layer":"iho-seas",
+    //     "type":"fill",
+    //     "paint":{
+    //         "fill-color":"#2facd6",
+    //     },
+    //     "layout":{
+    //         "visibility":"none"
+    //     }
+    // });
 
-    // internal Waters
-    map.addSource('internal-waters', {
-        "type":"vector",
-        "url":"mapbox://bldgit13.internal-waters"
-    });
+    // // internal Waters
+    // map.addSource('internal-waters', {
+    //     "type":"vector",
+    //     "url":"mapbox://bldgit13.internal-waters"
+    // });
 
-    map.addLayer({
-        "id":'internal-waters',
-        "source":'internal-waters',
-        "source-layer":"internal-waters",
-        "type":"fill",
-        "paint":{
-            "fill-color":"#5964d6",
-        },
-        "layout":{
-            "visibility":"none"
-        }
-    });
+    // map.addLayer({
+    //     "id":'internal-waters',
+    //     "source":'internal-waters',
+    //     "source-layer":"internal-waters",
+    //     "type":"fill",
+    //     "paint":{
+    //         "fill-color":"#5964d6",
+    //     },
+    //     "layout":{
+    //         "visibility":"none"
+    //     }
+    // });
 
       // load articles data
     let ARTICLE_URL = "https://staging-praesidiumintl.kinsta.cloud/wp-json/jet-cct/mare/?_orderby=_ID&_order=desc&_ordertype=integer";
@@ -335,7 +348,7 @@ function createGeojson(data) {
       })
 
       return fc;
-   }
+}
 
 
    // date filter
@@ -366,7 +379,7 @@ function createGeojson(data) {
          let { from, to } = dateFilter;
 
          if(new Date(from) < articleDate && new Date(to) > articleDate) {
-         return article;
+             return article;
          }
       });
 
@@ -387,18 +400,17 @@ function createGeojson(data) {
    });
 
    // open and close filter tab
-   var openFilter = document.getElementById("open-filter");
-   var closeFilter = document.getElementById("close-filter");
-   var filterTab = document.getElementById("filter-tab");
+   var openVesselTab = document.getElementById("open-vessel-tab");
+   var closeVesselTab = document.getElementById("close-vessel-tab");
+   var vesselTab = document.getElementById("vessel-tab");
 
-   closeFilter.addEventListener("click", function(e) {
-      filterTab.style.display = "none";
+   closeVesselTab.addEventListener("click", function(e) {
+      vesselTab.style.display = "none";
    });
 
-   openFilter.addEventListener("click", function(e) {
-      filterTab.style.display = "block";
-      layerTab.style.display = "none";
-      attributionTab.style.display = "none";
+   openVesselTab.addEventListener("click", function(e) {
+       closeFilterTab();
+      vesselTab.style.display = "block";
    });
 
 // open and close layer tab
@@ -408,13 +420,123 @@ var layerTab = document.getElementById("layer-tab");
 
 closeLayerTab.addEventListener("click", function(e) {
     layerTab.style.display = "none";
+    removeActiveClass();
 });
 
 openLayerTab.addEventListener("click", function(e) {
+    console.log("Home coming");
+    closeFilterTab();
+
     layerTab.style.display = "block";
+    this.classList.add('active');
 
     filterTab.style.display = "none";
-    attributionTab.style.display = "none";
+});
+
+// incident tab
+var incidentsType = [
+    {name:'Sea Robbery', bg_color:"#ffff00"},
+    {name: 'Piracy Attack', bg_color:"#7030a0"}, 
+    {name:'Piracy Kidnap / Hijack', bg_color:"#ff0000"},
+    {name: 'Criminality', bg_color:"#ffffff"}, 
+    {name: 'Activism', bg_color:""},
+    {name: 'Smuggling / Trafficking', bg_color:""},
+    {name: 'IUU Fishing', bg_color:""}, 
+    {name: 'Storewaways', bg_color:""},
+    {name: 'Suspicious', bg_color:"#92d050"},
+    {name: 'Militancy', bg_color:""}, 
+    {name: 'Law Enforcement', bg_color:""}, 
+    {name: 'Others', bg_color:""}
+];
+
+var incidencesElement = document.getElementById("incidences");
+incidentsType.forEach(incident => {
+    // create a form group
+    let element = `<div class="form-group">
+        <input type="checkbox" name="${incident.name}" id="" ${incident.name}>
+        <span class="dot" style="background-color:${incident.bg_color}"></span>
+        <label for="${incident.name}">${incident.name}</label>
+    </div>`;
+
+    incidencesElement.innerHTML += element;
+});
+
+var incidentTab = document.getElementById("incident-tab");
+var openIncidentTab = document.getElementById("open-incident-tab");
+var closeIncidentTab = document.getElementById("close-incident-tab")
+
+openIncidentTab.addEventListener("click", function(e) {
+    console.log("Home coming");
+
+    closeFilterTab();
+    incidentTab.style.display = "block";
+    this.classList.add('active');
+});
+
+closeIncidentTab.addEventListener("click", function(e) {
+    console.log("Home coming");
+    incidentTab.style.display = "none";
+    this.classList.add('active');
+});
+
+// date tab and incident tab
+var dateTab = document.getElementById("date-tab");
+var openDateTab = document.getElementById("open-date-filter");
+var closeDateTab = document.getElementById("close-date-tab")
+
+openDateTab.addEventListener("click", function(e) {
+    console.log("Home coming");
+
+    closeFilterTab();
+    dateTab.style.display = "block";
+    this.classList.add('active');
+});
+
+closeDateTab.addEventListener("click", function(e) {
+    console.log("Home coming");
+
+    dateTab.style.display = "none";
+    this.classList.add('active');
+});
+
+// last alerts filter
+var alertsTab = document.getElementById("alerts-tab");
+var openAlertsTab = document.getElementById("open-alerts-tab");
+var closeAlertsTab = document.getElementById("close-alerts-tab")
+
+openAlertsTab.addEventListener("click", function(e) {
+    console.log("Home coming");
+
+    closeFilterTab();
+    alertsTab.style.display = "block";
+    this.classList.add('active');
+});
+
+closeAlertsTab.addEventListener("click", function(e) {
+    console.log("Home coming");
+
+    alertsTab.style.display = "none";
+    this.classList.add('active');
+});
+
+// country filter
+var countryTab = document.getElementById("country-tab");
+var openCountryTab = document.getElementById("open-country-tab");
+var closeCountryTab = document.getElementById("close-country-tab")
+
+openCountryTab.addEventListener("click", function(e) {
+    console.log("Home coming");
+
+    closeFilterTab();
+    countryTab.style.display = "block";
+    this.classList.add('active');
+});
+
+closeCountryTab.addEventListener("click", function(e) {
+    console.log("Home coming");
+
+    countryTab.style.display = "none";
+    this.classList.add('active');
 });
 
 // toggle layers
@@ -425,14 +547,24 @@ layersCheckbox.forEach(layer => {
       let value = e.target.value;
       let checked = e.target.checked;
 
-      // update the layout property
-      if(name == 'articles') {
+    // update the form group
+    let parentElement = layer.parentElement;
+    addActiveClass(parentElement);
+
+    // if(checked) {
+    //     parentElement.classList.add('active'); 
+    // } else { 
+    //     parentElement.classList.remove('active');
+    // }
+
+    // update the layout property
+    if(name == 'articles') {
          !checked ? clearMarkers() : createCategoryMarkers(articles);
-      } else {
+    } else {
          var visibility = checked ? 'visible' : 'none';
-         map.setLayoutProperty(name, 'visibility', visibility);
+         map.getSource(name) ? map.setLayoutProperty(name, 'visibility', visibility) : false;
       }
-      });
+    });
 });
 
 // toggle attribution tab
@@ -445,8 +577,7 @@ closeAttributionButton.addEventListener("click", function(e) {
 });
 
 openAttributionButton.addEventListener("click", function(e) {
-    layerTab.style.display = "none";
-    filterTab.style.display = "none";
+    closeFilterTab();
     attributionTab.style.display = "block";
 });
 
@@ -465,3 +596,31 @@ openSideTab.addEventListener("click", function(e) {
 closeSideTab.addEventListener("click", function(e) {
     sideBar.style.display = "none";
 });
+
+
+// Toggle filter item
+var filterItems = document.querySelectorAll(".filter-item");
+function removeActiveClass() {
+    filterItems.forEach(item => item.classList.remove('active'));
+}
+
+filterItems.forEach(item => {
+    item.addEventListener("click", function(e) {
+        removeActiveClass();
+        addActiveClass(item);
+    });
+});
+
+function addActiveClass(element) {
+    if(element.classList.contains('active')) {
+        element.classList.remove('active');
+    } else {
+        element.classList.add('active');
+    }
+}
+
+function closeFilterTab() {
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.style.display = 'none';
+    });
+}
