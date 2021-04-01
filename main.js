@@ -199,7 +199,7 @@ map.on("load", function(e) {
         data = data.sort((a, b) => new Date(a.cct_created) < new Date(b.cct_created));
 
         // Incidents in the past week
-        let oneWeekInMs = 1000 * 60 * 60 * 24 * value;
+        let oneWeekInMs = 1000 * 60 * 60 * 24 * 7;
         let filterDate = new Date(new Date() - oneWeekInMs);
 
         incidents = data.filter(article => new Date(article.cct_created) > filterDate);
@@ -465,16 +465,47 @@ var incidentsType = [
     {name: 'Others', bg_color:""}
 ];
 
+var activeIncidentType = [];
 var incidencesElement = document.getElementById("incidences");
+// var incidentTypeCheckbox = document.querySelectorAll("incident-type");
+
 incidentsType.forEach(incident => {
     // create a form group
     let element = `<div class="form-group">
-        <input type="checkbox" name="${incident.name}" id="" ${incident.name}>
+        <input type="checkbox" name="${incident.name}" id="${incident.name}" class="incident-type">
         <span class="dot" style="background-color:${incident.bg_color}"></span>
         <label for="${incident.name}">${incident.name}</label>
     </div>`;
 
     incidencesElement.innerHTML += element;
+    
+});
+
+var incidentTypeCheckbox = document.querySelectorAll(".incident-type");
+
+incidentTypeCheckbox.forEach( incident => {
+    incident.addEventListener("change", function(e) {
+       let { checked, name} = e.target;
+       
+       if(checked) {
+            activeIncidentType.push(name);
+       } else {
+            activeIncidentType = activeIncidentType.filter(incident => incident != name);
+       }
+
+    // filter
+    let incidents = activeIncidentType.map(activeIncident => {
+        let articleFilter = articles.filter(article => article.category.includes(activeIncident));
+
+        return articleFilter;
+    }).reduce((a, b) => [...a, ...b], []);
+
+    console.log(incidents);
+
+    clearMarkers();
+    createCategoryMarkers(incidents);
+
+    });
 });
 
 var incidentTab = document.getElementById("incident-tab");
