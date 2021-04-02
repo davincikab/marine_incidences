@@ -1,4 +1,4 @@
-var articles, incidents, articleMarkers = countriesr = [];
+var articles, incidents, articleMarkers = countries = [];
 var listingDiv = document.getElementById("listing-div");
 var mapWrapperContainer = document.getElementById("container");
 
@@ -235,14 +235,21 @@ function createMarker(item) {
     let popupContent = getPopupContent(item);
 
     // popup content
-    var popup = new mapboxgl.Popup()
+    var popup = new mapboxgl.Popup({focusAfterOpen:false, closeOnMove:false, closeOnClick:false})
       .setMaxWidth('300px')
       .setHTML(popupContent);
+    
+    // popup events
+    popup.on("open", function(e) {
+        // make it draggable
+        console.log(e);
+
+        dragElement(e.target._content);
+    });
 
     // get icon
     let icon = getCategorizeMarker(item.category);
     var markerIcon = document.createElement("div");
-
 
     markerIcon.addEventListener("mouseover", function(e) {
         markerIcon.style.height = "13px";
@@ -270,10 +277,17 @@ function createMarker(item) {
 }
 
 function getPopupContent(item) {
+    let date = new Date(item.date).toDateString();
+    let [dayName, monthName, dayDate, year] = date.split(" ");
+
+    let color = item.bg_color == "#ffffff" ? "black" : "white";
+
     return "<div class='popup-content'>"+
-    "<img src='"+ item.photo +"' alt='" + item.title + "' class='popup-img' />" +
+    "<div class='popup-header' style='background-color:"+ item.bg_color + "; color:"+ color +";'>" + item.category + "</div>"+
+    // "<img src='"+ item.photo +"' alt='" + item.title + "' class='popup-img' />" +
     "<div class='article-info'>" +
-    "<h2 class='article-title'><a href=''>" + item.title + "</a></h2>" +
+        "<div class='article-title'>" + item.country + "; " + item.vessel_name +"; " + item.closest_landmark+  "</div>" +
+        "<div><i class='fa fa-clock-o'></i> " + dayDate +" "+ monthName  + " " + year +"; " + item.ship_type +"</div>"+
     // "<p>" + item.event_description +"</p>"+
     "</div>" +
  "</div>";
