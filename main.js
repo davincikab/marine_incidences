@@ -5,8 +5,8 @@ var mapWrapperContainer = document.getElementById("container");
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGF1ZGk5NyIsImEiOiJjanJtY3B1bjYwZ3F2NGFvOXZ1a29iMmp6In0.9ZdvuGInodgDk7cv-KlujA';
 var map = new mapboxgl.Map({
     container: 'map',
-    // style: 'mapbox://styles/bldgit13/ckmg34nec0elb17mto0vxj6lj',
-    style:'mapbox://styles/mapbox/dark-v10',
+    style: 'mapbox://styles/daudi97/ckmx138900dzb17p6ycnl8zh4',
+    // style:'mapbox://styles/mapbox/dark-v10',
     center: [-7.594081153831553, 14.730749011074153], // master center
     zoom: 2, // master zoom
     attribution:false,
