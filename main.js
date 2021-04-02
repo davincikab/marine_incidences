@@ -1,4 +1,4 @@
-var articles, incidents, articleMarkers = countries = [];
+var articles, incidents, articleMarkers = countries = vesselTypes = [];
 var listingDiv = document.getElementById("listing-div");
 var mapWrapperContainer = document.getElementById("container");
 
@@ -26,6 +26,25 @@ var eraBoundary = {
     "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
     "features": [
         { "type":"Feature", "geometry": { "type":"LineString", "coordinates":[[-2.00, 4.75], [-2.00, 4.00], [6.4167, -0.1833], [8.7000, -0.6333]]}}
+    ]
+};
+
+var hraBoundary = {
+    "type": "FeatureCollection",
+    "name": "hra",
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": [
+        { "type":"Feature", "geometry": { "type":"LineString", "coordinates":[[50.0000, -5.0000], [55.0000, 0.0000], [60.000, 10.0000], [60.0000, 14.000]]}},
+    ]
+};
+
+var jwcBoundary = {
+    "type": "FeatureCollection",
+    "name": "era",
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": [
+        { "type":"Feature", "geometry": { "type":"LineString", "coordinates":[[0.200, 6.1125], [3.0000, -0.6667], [8.7000, -0.6667]]}},
+        { "type":"Feature", "geometry": { "type":"LineString", "coordinates":[[58.000, 15.000], [65.0000, 15.000], [65.0000, -12.000], [58.0000, -12.000], [58.000, 15.000] ]}}
     ]
 };
 
@@ -186,6 +205,63 @@ map.on("load", function(e) {
     //     }
     // });
 
+    // JWC Boundary
+    map.addSource("jwc-boundary", {
+        "data":jwcBoundary,
+        "type":"geojson"
+    });
+
+    map.addLayer({
+        "id":"jwc-boundary",
+        "source":"jwc-boundary",
+        "type":"line",
+        "paint":{
+            "line-color":"blue",
+            "line-width":1
+        },
+        "layout":{
+            "visibility":"none"
+        }
+    });
+
+    // HRA Boundary
+    map.addSource("hra-boundary", {
+        "data":hraBoundary,
+        "type":"geojson"
+    });
+
+    map.addLayer({
+        "id":"hra-boundary",
+        "source":"hra-boundary",
+        "type":"line",
+        "paint":{
+            "line-color":"brown",
+            "line-width":1
+        },
+        "layout":{
+            "visibility":"none"
+        }
+    });
+
+    // ERA BOUNDARY
+    map.addSource("era-boundary", {
+        "data":eraBoundary,
+        "type":"geojson"
+    });
+
+    map.addLayer({
+        "id":"era-boundary",
+        "source":"era-boundary",
+        "type":"line",
+        "paint":{
+            "line-color":"yellow",
+            "line-width":1
+        },
+        "layout":{
+            "visibility":"none"
+        }
+    });
+
       // load articles data
     let ARTICLE_URL = "https://staging-praesidiumintl.kinsta.cloud/wp-json/jet-cct/mare/?_orderby=_ID&_order=desc&_ordertype=integer";
     fetch(ARTICLE_URL)
@@ -236,7 +312,7 @@ function createMarker(item) {
 
     // popup content
     var popup = new mapboxgl.Popup({focusAfterOpen:false, closeOnMove:false, closeOnClick:false})
-      .setMaxWidth('300px')
+      .setMaxWidth('380px')
       .setHTML(popupContent);
     
     // popup events
@@ -288,7 +364,7 @@ function getPopupContent(item) {
     "<div class='article-info'>" +
         "<div class='article-title'>" + item.country + "; " + item.vessel_name +"; " + item.closest_landmark+  "</div>" +
         "<div><i class='fa fa-clock-o'></i> " + dayDate +" "+ monthName  + " " + year +"; " + item.ship_type +"</div>"+
-    // "<p>" + item.event_description +"</p>"+
+        "<p>Overview  Event Description Analysis and Additional Information</p>"+
     "</div>" +
  "</div>";
 }
