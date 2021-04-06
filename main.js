@@ -615,8 +615,10 @@ vesselFamily.forEach(family => {
     let id = family.name.toLowerCase().split(" ").join("-");
 
     let element = `<div class="toggle-collapse" data-href="${id}">
-            <input type="checkbox" name="${family.name}" id="${family.name}" class="vessel-family" data-id=${id}>
-            <label>${family.name}</label>
+            <div>
+                <input type="checkbox" name="${family.name}" id="${family.name}" class="vessel-family" data-id=${id}>
+                <label>${family.name}</label>
+            </div>
             <span class="caret"><i class='fa fa-caret-down'></i></span>
         </div>`;
 
@@ -700,29 +702,16 @@ function closeAllCollapse() {
     });
 }
 
-// 
-// vesselTypes.forEach(vessel => {
-//     // create a form group
-//     let element = `<div class="form-group">
-//         <input type="checkbox" name="${vessel}" id="${vessel}" class="vessel-type">
-//            <label for="${vessel}">${vessel}</label>
-//     </div>`;
-   
-//     vesselElement.innerHTML += element;
-       
-// });
-
+// veseel types
 var vesselFamilyCheckbox = document.querySelectorAll(".vessel-family");
 vesselFamilyCheckbox.forEach(vessel => {
     vessel.addEventListener("change", function(e) {
         e.stopPropagation();
 
         let { checked, name, dataset:{ id }} = e.target;
-        let collapseGroup = document.getElementById(id);
+        
         let checkboxes = document.querySelectorAll("#" + id + " .vessel-type");
 
-        // console.log(collapseGroup);
-        // console.log(checkboxes);
         // get the filter values
         let family = vesselFamily.find(vFamily => vFamily.name == name);
 
