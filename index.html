@@ -24,6 +24,7 @@
             position: relative;
             background-color: #323B4A;
             font-family: Verdana,Helvetica,Arial,sans-serif !important;
+            overflow: hidden;
         }
 
         .elementor-column-gap-default>.elementor-column>.elementor-element-populated {
@@ -92,15 +93,16 @@
             position: absolute;
             padding: 5px 15px;
             top:0%;
-            right:57px;
+            right:-300px;
             height: auto;
             width: 300px;
-            display: none;
+            /* display: none; */
             background: linear-gradient(137deg, #6ab6cb 0%, #51a7b6 20%, #29768a 40%, #2c5a71 72%, #2c5a71 100%);
             z-index: 1;
             box-shadow: 2px 2px 0.5em var(--gray2);
             color:var(--white);
             overflow: hidden;
+            transition: 0.3s all;
         }
 
         .filter-header {
@@ -232,7 +234,6 @@
 
         /* layer tab */
         #layer-tab {
-            display: none;
             padding: 5px 15px;
             font-size: 16px;
             top: 0%;
@@ -756,17 +757,9 @@
 
         <!-- filter tab -->
         <div class="filter-tab" id="layer-tab">
-            <!-- <div class="filter-header">
-                <span>
-                    <i class="fa fa-filter"></i>
-                </span>
-
-                <span>Incident Filter / Search</span> -->
-
-                <span role="button" class="close-btn" id="close-layer-tab">
-                    <i class="fa fa-times"></i>
-                </span>
-            <!-- </div> -->
+            <span role="button" class="close-btn" id="close-layer-tab">
+                <i class="fa fa-times"></i>
+            </span>
 
             <h3 class="tab-title" style="font-size: 22px; color: #ffffff; margin-top: 0;">Map Layers</h3>
             <div class="form-group active">

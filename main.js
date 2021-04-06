@@ -555,12 +555,14 @@ function createGeojson(data) {
    var vesselTab = document.getElementById("vessel-tab");
 
    closeVesselTab.addEventListener("click", function(e) {
-      vesselTab.style.display = "none";
+    //   vesselTab.style.display = "none";
+      vesselTab.style.right = "-300px";
    });
 
    openVesselTab.addEventListener("click", function(e) {
        closeFilterTab();
       vesselTab.style.display = "block";
+      vesselTab.style.right = "57px";
    });
 
 
@@ -774,7 +776,8 @@ var closeLayerTab = document.getElementById("close-layer-tab");
 var layerTab = document.getElementById("layer-tab");
 
 closeLayerTab.addEventListener("click", function(e) {
-    layerTab.style.display = "none";
+    // layerTab.style.display = "none";
+    layerTab.style.right = "-300px";
     removeActiveClass();
 });
 
@@ -782,7 +785,8 @@ openLayerTab.addEventListener("click", function(e) {
     console.log("Home coming");
     closeFilterTab();
 
-    layerTab.style.display = "block";
+    // layerTab.style.display = "block";
+    layerTab.style.right = "57px";
     this.classList.add('active');
 });
 
@@ -860,13 +864,15 @@ openIncidentTab.addEventListener("click", function(e) {
     console.log("Home coming");
 
     closeFilterTab();
-    incidentTab.style.display = "block";
+    // incidentTab.style.display = "block";
+    incidentTab.style.right = "57px";
     this.classList.add('active');
 });
 
 closeIncidentTab.addEventListener("click", function(e) {
     console.log("Home coming");
-    incidentTab.style.display = "none";
+    // incidentTab.style.display = "none";
+    incidentTab.style.right = "-300px";
     this.classList.add('active');
 });
 
@@ -913,14 +919,14 @@ openDateTab.addEventListener("click", function(e) {
     console.log("Home coming");
 
     closeFilterTab();
-    dateTab.style.display = "block";
+    dateTab.style.right = "57px";
     this.classList.add('active');
 });
 
 closeDateTab.addEventListener("click", function(e) {
     console.log("Home coming");
 
-    dateTab.style.display = "none";
+    dateTab.style.right = "-300px";
     this.classList.add('active');
 });
 
@@ -933,14 +939,14 @@ openAlertsTab.addEventListener("click", function(e) {
     console.log("Home coming");
 
     closeFilterTab();
-    alertsTab.style.display = "block";
+    alertsTab.style.right = "57px";
     this.classList.add('active');
 });
 
 closeAlertsTab.addEventListener("click", function(e) {
     console.log("Home coming");
 
-    alertsTab.style.display = "none";
+    alertsTab.style.right = "-300px";
     this.classList.add('active');
 });
 
@@ -953,14 +959,14 @@ openCountryTab.addEventListener("click", function(e) {
     console.log("Home coming");
 
     closeFilterTab();
-    countryTab.style.display = "block";
+    countryTab.style.right = "57px";
     this.classList.add('active');
 });
 
 closeCountryTab.addEventListener("click", function(e) {
     console.log("Home coming");
 
-    countryTab.style.display = "none";
+    countryTab.style.right = "-300px";
     this.classList.add('active');
 });
 
@@ -1040,12 +1046,12 @@ var openAttributionButton = document.getElementById("open-info-tab");
 var attributionTab = document.getElementById("info-tab");
 
 closeAttributionButton.addEventListener("click", function(e) {
-    attributionTab.style.display = "none";
+    attributionTab.style.right = "-300px";
 });
 
 openAttributionButton.addEventListener("click", function(e) {
     closeFilterTab();
-    attributionTab.style.display = "block";
+    attributionTab.style.right = "57px";
 });
 
 
@@ -1107,6 +1113,6 @@ function addActiveClass(element) {
 
 function closeFilterTab() {
     document.querySelectorAll('.filter-tab').forEach(tab => {
-        tab.style.display = 'none';
+        tab.style.right = '-300px';
     });
 }
