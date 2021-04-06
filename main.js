@@ -1,4 +1,10 @@
-var articles, incidents, articleMarkers = countries = vesselTypes = [];
+var 
+    articles, 
+    incidents, 
+    articleMarkers = countries = []
+var vesselTypes = ['Container Ship', 'Ro-Ro/Vehicles Carrier, Reefer', 'Aggregates Carrier', 'Cement Carrier', 
+'Ore Carrier', 'Livestock Carrier', 'OBO Carrier', 'Heavy Load Carrier', 'Barge', 'Inland Cargo', 'Special Cargo', 'Other Cargo'];
+
 var listingDiv = document.getElementById("listing-div");
 var mapWrapperContainer = document.getElementById("container");
 
@@ -539,6 +545,51 @@ function createGeojson(data) {
       vesselTab.style.display = "block";
    });
 
+var activeVesselType = [];
+var vesselElement = document.getElementById("vessels");
+// var incidentTypeCheckbox = document.querySelectorAll("incident-type");
+   
+
+vesselTypes.forEach(vessel => {
+    // create a form group
+    let element = `<div class="form-group">
+        <input type="checkbox" name="${vessel}" id="${vessel}" class="vessel-type">
+           <label for="${vessel}">${vessel}</label>
+    </div>`;
+   
+    vesselElement.innerHTML += element;
+       
+});
+   
+var vesselTypeCheckbox = document.querySelectorAll(".vessel-type");
+   
+vesselTypeCheckbox.forEach(vessel => {
+    vessel.addEventListener("change", function(e) {
+          let { checked, name} = e.target;
+          
+        if(checked) {
+            activeVesselType.push(name);
+        } else {
+            activeVesselType = activeVesselType.filter(vessel => vessel != name);
+        }
+   
+        // filter
+        let vessels = activeVesselType.map(activeVessel => {
+            let articleFilter = articles.filter(article => article.ship_type.includes(activeVessel));
+   
+            return articleFilter;
+        }).reduce((a, b) => [...a, ...b], []);
+   
+        console.log(vessels);
+   
+        clearMarkers();
+        createCategoryMarkers(vessels);
+   
+    });
+});
+
+
+
 // open and close layer tab
 var openLayerTab = document.getElementById("open-layer-tab");
 var closeLayerTab = document.getElementById("close-layer-tab");
@@ -564,15 +615,20 @@ var incidentsType = [
     {name:'Sea Robbery', bg_color:"#ffff00"},
     {name: 'Piracy Attack', bg_color:"#7030a0"}, 
     {name:'Piracy Kidnap / Hijack', bg_color:"#ff0000"},
-    {name: 'Criminality', bg_color:"#ffffff"}, 
-    {name: 'Activism', bg_color:""},
-    {name: 'Smuggling / Trafficking', bg_color:""},
-    {name: 'IUU Fishing', bg_color:""}, 
-    {name: 'Storewaways', bg_color:""},
+    {name: 'Criminality Robbery', bg_color:"#ffffff"}, 
+    {name: 'Criminality Kidnap', bg_color:"#ffffff"}, 
+    {name: 'Activism', bg_color:"#833c0b"},
+    {name: 'Smuggling / Trafficking', bg_color:"#806000"},
+    {name: 'IUU Fishing', bg_color:"#959595"}, 
+    {name: 'Storewaways', bg_color:"#00b050"},
     {name: 'Suspicious', bg_color:"#92d050"},
-    {name: 'Militancy', bg_color:""}, 
-    {name: 'Law Enforcement', bg_color:""}, 
-    {name: 'Others', bg_color:""}
+    {name:"Militancy IED / WIED / Seamines", bg_color:"#000000"},
+    {name: 'Militancy Assault', bg_color:"#000000"}, 
+    {name: 'Militancy Kidnap', bg_color:"#000000"}, 
+    {name: 'Militancy Sabotage', bg_color:"#000000"}, 
+    {name: 'Law Enforcement Drill', bg_color:"#00b0f0"},
+    {name: 'Law Enforcement Operation', bg_color:"#00b0f0"}, 
+    {name: 'Others', bg_color:"#ffc000"}
 ];
 
 var activeIncidentType = [];
