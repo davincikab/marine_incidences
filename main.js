@@ -5,6 +5,22 @@ var
 var vesselTypes = ['Container Ship', 'Ro-Ro/Vehicles Carrier, Reefer', 'Aggregates Carrier', 'Cement Carrier', 
 'Ore Carrier', 'Livestock Carrier', 'OBO Carrier', 'Heavy Load Carrier', 'Barge', 'Inland Cargo', 'Special Cargo', 'Other Cargo'];
 
+var vesselFamily = [
+    {'Cargo Vessels':[
+        'Container Ship', 'Ro-Ro/Vehicles Carrier, Reefer', 'Aggregates Carrier', 'Cement Carrier', 
+        'Ore Carrier', 'Livestock Carrier', 'OBO Carrier', 'Heavy Load Carrier', 'Barge', 'Inland Cargo', 'Special Cargo', 'Other Cargo'
+    ]},
+    {'Tankers':[]},
+    {'Passenger Vessel':[]},
+    {'High Speed Craft':[]},
+    {'Tugs and Special Craft':[]},
+    {'Fishing':[]},
+    {'Pleasure Craft':[]},
+    {'Navigation Aids':[]},
+    {'Unspecified Ship':[]}
+];
+
+
 var listingDiv = document.getElementById("listing-div");
 var mapWrapperContainer = document.getElementById("container");
 
@@ -363,9 +379,11 @@ function getPopupContent(item) {
     let [dayName, monthName, dayDate, year] = date.split(" ");
 
     let color = item.bg_color == "#ffffff" ? "black" : "white";
+    // background-image: linear-gradient( 45deg, #ddd5d5d9, transparent);
+    //         background-blend-mode: darken;
 
     return "<div class='popup-content'>"+
-    "<div class='popup-header' style='background-color:"+ item.bg_color + "; color:"+ color +";'>" + item.category + "</div>"+
+    "<div class='popup-header' style='background-image: linear-gradient(45deg, #ddd5d5d9, transparent); background-blend-mode:darken; background-color:"+ item.bg_color + "; color:"+ color +";'>" + item.category + "</div>"+
     // "<img src='"+ item.photo +"' alt='" + item.title + "' class='popup-img' />" +
     "<div class='article-info'>" +
         "<div class='article-title'>" + item.country + "; " + item.vessel_name +"; " + item.closest_landmark+  "</div>" +
@@ -545,50 +563,221 @@ function createGeojson(data) {
       vesselTab.style.display = "block";
    });
 
+
 var activeVesselType = [];
 var vesselElement = document.getElementById("vessels");
-// var incidentTypeCheckbox = document.querySelectorAll("incident-type");
-   
+var vesselFamily = [
+    {
+        name:'Cargo Vessels',
+        value:[
+        'Container Ship', 'Ro-Ro/Vehicles Carrier, Reefer', 'Aggregates Carrier', 'Cement Carrier', 
+        'Ore Carrier', 'Livestock Carrier', 'OBO Carrier', 'Heavy Load Carrier', 'Barge', 'Inland Cargo', 'Special Cargo', 'Other Cargo'
+        ]
+    },
+    {
+        name:'Tankers',
+        value:["Tanker", "Oil Products Tanker", "Crude Oil Tanker", "Oil/Chemical Tanker", "Chemical Tanker", "LPG Tanker", "LNG Tanker", "Bunkering Tanker", "Asphalt/Bitumen Tanker", "Water Tanker", "Inland Tanker", "Special Tanker", "Other Tanker"]
+    },
+    {
+        name:'Passenger Vessel',
+        value:["Passenger Ship", "Ro-Ro/Passenger Ship", "Inland Passenger Ship", "Passenger/Cargo Ship", "Special Passenger Vessel", "Other Passenger Ship"]
+    },
+    {
+        name:'High Speed Craft',
+        value:[]
+    },
+    {
+        name:'Tugs and Special Craft',
+        value:[]
+    },
+    {
+        name:'Fishing',
+        value:[]
+    },
+    {
+        name:'Pleasure Craft',
+        value:[]
+    },
+    {
+        name:'Navigation Aids',
+        value:[]
+    },
+    {
+        name:'Unspecified Ship',
+        value:[]
+    }
+];  
 
-vesselTypes.forEach(vessel => {
-    // create a form group
-    let element = `<div class="form-group">
-        <input type="checkbox" name="${vessel}" id="${vessel}" class="vessel-type">
-           <label for="${vessel}">${vessel}</label>
-    </div>`;
-   
-    vesselElement.innerHTML += element;
+vesselFamily.forEach(family => {
+    // collapse toggle
+    var collapseContainer = document.createElement("div");
+
+    let id = family.name.toLowerCase().split(" ").join("-");
+
+    let element = `<div class="toggle-collapse" data-href="${id}">
+            <input type="checkbox" name="${family.name}" id="${family.name}" class="vessel-family" data-id=${id}>
+            <label>${family.name}</label>
+            <span class="caret"><i class='fa fa-caret-down'></i></span>
+        </div>`;
+
+    collapseContainer.innerHTML += element;
+
+    // create a toggleble div element
+    let familyDiv = document.createElement("div");
+    familyDiv.classList.add("collapse");
+    familyDiv.classList.add("close");
+    familyDiv.setAttribute("id", id);
+
+    // add vessels elements
+    let vesselTypes = family.value;
+    vesselTypes.forEach(vessel => {
+        // create a form group
+        let element = `<div class="form-group">
+            <input type="checkbox" name="${vessel}" id="${vessel}" class="vessel-type">
+               <label for="${vessel}">${vessel}</label>
+        </div>`;
        
+        familyDiv.innerHTML += element; 
+    });
+
+    collapseContainer.append(familyDiv);
+
+    // 
+    vesselElement.append(collapseContainer);
+
 });
+
+// toggle the collapse section
+var collapseToggler = document.querySelectorAll(".toggle-collapse");
+collapseToggler.forEach( toggler => {
+    toggler.addEventListener("click", function(e) {
+        let activeToggler = e.target;
+
+        // e.stopPropagation();
+        if(e.target != this) {
+            activeToggler = e.target.parentElement;
+            return;
+        }
+
+        let dataId = activeToggler.dataset.href;
+        let caretElement = activeToggler.children[2];
+
+        // close any other collapse
+        closeAllCollapse();
+
+        // get the collapse element
+        let activeCollapse = document.getElementById(dataId);
+
+        // get element height
+        if(activeCollapse.style.height == "0px") {
+            activeCollapse.classList.remove("close");
+
+            let height = activeCollapse.scrollHeight;
+            activeCollapse.style.height = height + "px";  
+
+            caretElement.innerHTML = "<i class='fa fa-caret-up'></i>";
+            return;
+        } else {
+            activeCollapse.style.height = 0 + "px";  
+
+            // update caret
+            caretElement.innerHTML = "<i class='fa fa-caret-down'></i>";
+        }
+
+        
+    });
+});
+
+function closeAllCollapse() {
+    document.querySelectorAll(".collapse").forEach(collapse => {
+        collapse.classList.add("close");
+
+        // change the caret to 
+        let carets = document.querySelectorAll(".caret");
+        carets.forEach(caret => {
+            caret.innerHTML = "<i class='fa fa-caret-down'></i>";
+        });
+    });
+}
+
+// 
+// vesselTypes.forEach(vessel => {
+//     // create a form group
+//     let element = `<div class="form-group">
+//         <input type="checkbox" name="${vessel}" id="${vessel}" class="vessel-type">
+//            <label for="${vessel}">${vessel}</label>
+//     </div>`;
    
+//     vesselElement.innerHTML += element;
+       
+// });
+
+var vesselFamilyCheckbox = document.querySelectorAll(".vessel-family");
+vesselFamilyCheckbox.forEach(vessel => {
+    vessel.addEventListener("change", function(e) {
+        e.stopPropagation();
+
+        let { checked, name, dataset:{ id }} = e.target;
+        let collapseGroup = document.getElementById(id);
+        let checkboxes = document.querySelectorAll("#" + id + " .vessel-type");
+
+        // console.log(collapseGroup);
+        // console.log(checkboxes);
+        // get the filter values
+        let family = vesselFamily.find(vFamily => vFamily.name == name);
+
+        if(family){
+            if(checked) {
+                activeVesselType = [...activeVesselType, ...family.value];
+                    checkboxes.forEach(checkbox => checkbox.checked = true);
+            } else {
+                // filter the 
+                activeVesselType = activeVesselType.filter(vessel => {
+                    if(family.value.indexOf(vessel) == -1) {
+                        return vessel;
+                    }
+
+                    return false;
+                });
+
+                // check all active vessel checkbox
+                checkboxes.forEach(checkbox => checkbox.checked = false);
+                console.log(activeVesselType);
+            }
+        }
+        
+        filterAlertsByVesselType(activeVesselType);
+    })
+});
+
 var vesselTypeCheckbox = document.querySelectorAll(".vessel-type");
-   
 vesselTypeCheckbox.forEach(vessel => {
     vessel.addEventListener("change", function(e) {
-          let { checked, name} = e.target;
+        let { checked, name} = e.target;
           
         if(checked) {
             activeVesselType.push(name);
         } else {
             activeVesselType = activeVesselType.filter(vessel => vessel != name);
         }
-   
-        // filter
-        let vessels = activeVesselType.map(activeVessel => {
-            let articleFilter = articles.filter(article => article.ship_type.includes(activeVessel));
-   
-            return articleFilter;
-        }).reduce((a, b) => [...a, ...b], []);
-   
-        console.log(vessels);
-   
-        clearMarkers();
-        createCategoryMarkers(vessels);
-   
+        
+        filterAlertsByVesselType(activeVesselType);   
     });
 });
 
+function filterAlertsByVesselType(activeVesselType) {
+    // filter
+    let vessels = activeVesselType.map(activeVessel => {
+        let articleFilter = articles.filter(article => article.ship_type.includes(activeVessel));
 
+        return articleFilter;
+    }).reduce((a, b) => [...a, ...b], []);
+
+    console.log(vessels);
+
+    clearMarkers();
+    createCategoryMarkers(vessels);
+}
 
 // open and close layer tab
 var openLayerTab = document.getElementById("open-layer-tab");
