@@ -527,7 +527,7 @@
             position: relative;
             padding:0.5em 0.4em;
             background-color: #15212f;
-            font-size: 0.75rem;
+            font-size: 12px;
             color: white;
             box-shadow: 1px 1px 0.3em #15212f;
         }
@@ -550,7 +550,7 @@
             background-color: #252b3b;
             color:white;
             padding: 0.5rem 1em;
-            font-size: 0.75rem;
+            font-size: 12px;
             flex: auto;
             text-align: center;
         }
@@ -660,8 +660,9 @@
                 overflow-y: scroll;
             }
 
-            .header-item {
+            .incident-header .header-item {
                 font-size: 0.5rem;
+                height: 50px;
             }
 
             .side-tab {
@@ -675,6 +676,10 @@
                 display: flex;
                 flex-direction: column;
                 align-items: flex-end;
+            }
+
+            .detail-section {
+                font-size: 12px;
             }
 
             #map {

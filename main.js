@@ -392,9 +392,34 @@ function createMarker(item) {
         let utcDate = new Date(item.date).toUTCString();
 
         overviewSection.innerHTML = item.overview;
-        overviewSection.innerHTML += "<div class='d-flex mt-3'>" +
-            "<div class='mr-2'><i class='fa fa-map-marker'></i> " + item.country + "</div>" +
-            "<div><i class='fa fa-clock-o'></i> " + utcDate + "</div>" +
+        overviewSection.innerHTML += "<div>" +
+            "<div class='d-flex'>"+
+                "<div><i class='fa fa-clock-o'></i> Type of Alert:</div>" + 
+                "<div>" + item.category + "<div>" +
+            "</div>" +
+            "<div class='d-flex'>"+
+                "<div><i class='fa fa-map-marker'></i> Date:</div>" + 
+                "<div>" + item.country + "<div>" +
+            "</div>" +
+            "<div class='d-flex'>"+
+                "<div><i class='fa fa-clock-o'></i> Date:</div>" + 
+                "<div>" + utcDate + "<div>" +
+            "</div>" +
+            "<div class='d-flex'>"+
+                "<div><i class='fa fa-map'></i> Coordinates:</div>" + 
+                "<div>" + item.coordinates + "<div>" +
+            "</div>" +
+            "<div class='d-flex'>"+
+                "<div><i class='fa fa-clock-o'></i> Closest Landmark:</div>" + 
+                "<div>" + item.closest_landmark + "<div>" +
+            "</div>" +
+            "<div class='d-flex'>"+
+                "<div><i class='fa fa-clock-o'></i> Vessel Type:</div>" + 
+                "<div>" + item.ship_type + "<div>" +
+            "</div>" +
+            "<div>"+
+                item.photo ? "<img src='" + item.photo +"' alt=''/>" :"" +
+            "</div>"+
             "</div>";
 
         descriptionSection.innerHTML = item.event_description;
