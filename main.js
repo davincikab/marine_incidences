@@ -395,7 +395,7 @@ function getPopupContent(item) {
     // "<img src='"+ item.photo +"' alt='" + item.title + "' class='popup-img' />" +
     "<div class='article-info'>" +
         "<div class='article-title'>" + item.country + "; " + item.vessel_name +"; " + item.closest_landmark+  "</div>" +
-        "<div><i class='fa fa-clock-o'></i> " + dayDate +" "+ monthName  + " " + year +"; " + item.ship_type +"</div>"+
+        "<div><i class='fa fa-clock-o'></i> " + dayDate +" "+ monthName  + " " + year +" " + item.ship_type +"</div>"+
         "<p>Overview  Event Description Analysis and Additional Information</p>"+
     "</div>" +
  "</div>";
@@ -806,7 +806,7 @@ var incidentsType = [
     {name: 'Piracy Attack', bg_color:"#7030a0"}, 
     {name:'Piracy Kidnap / Hijack', bg_color:"#ff0000"},
     {name: 'Criminality Robbery', bg_color:"#ffffff"}, 
-    {name: 'Criminality Kidnap', bg_color:"#ffffff"}, 
+    // {name: 'Criminality Kidnap', bg_color:"#ffffff"}, 
     {name: 'Activism', bg_color:"#833c0b"},
     {name: 'Smuggling / Trafficking', bg_color:"#806000"},
     {name: 'IUU Fishing', bg_color:"#959595"}, 
@@ -814,8 +814,8 @@ var incidentsType = [
     {name: 'Suspicious', bg_color:"#92d050"},
     {name:"Militancy IED / WIED / Seamines", bg_color:"#000000"},
     {name: 'Militancy Assault', bg_color:"#000000"}, 
-    {name: 'Militancy Kidnap', bg_color:"#000000"}, 
-    {name: 'Militancy Sabotage', bg_color:"#000000"}, 
+    // {name: 'Militancy Kidnap', bg_color:"#000000"}, 
+    // {name: 'Militancy Sabotage', bg_color:"#000000"}, 
     {name: 'Law Enforcement Drill', bg_color:"#00b0f0"},
     {name: 'Law Enforcement Operation', bg_color:"#00b0f0"}, 
     {name: 'Others', bg_color:"#ffc000"}
