@@ -392,7 +392,7 @@ function createMarker(item) {
         let utcDate = new Date(item.date).toUTCString();
 
         overviewSection.innerHTML = item.overview;
-        overviewSection.innerHTML += "<div class='d-flex'>" +
+        overviewSection.innerHTML += "<div class='d-flex mt-3'>" +
             "<div class='mr-2'><i class='fa fa-map-marker'></i> " + item.country + "</div>" +
             "<div><i class='fa fa-clock-o'></i> " + utcDate + "</div>" +
             "</div>";
