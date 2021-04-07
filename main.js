@@ -334,7 +334,7 @@ function createMarker(item) {
 
     // popup content
     var popup = new mapboxgl.Popup({focusAfterOpen:false, closeOnMove:false, closeOnClick:false})
-      .setMaxWidth('380px')
+      .setMaxWidth('280px')
       .setHTML(popupContent);
     
     // popup events
@@ -342,7 +342,7 @@ function createMarker(item) {
         // make it draggable
         console.log(e);
 
-        dragElement(e.target._content);
+        dragElement(e.target._container, e.target._content, e.target._tip);
     });
 
     // get icon
@@ -352,11 +352,19 @@ function createMarker(item) {
     markerIcon.addEventListener("mouseover", function(e) {
         markerIcon.style.height = "13px";
         markerIcon.style.width = "13px";
+
+        markerIcon.classList.add("active-marker");
     });
 
     markerIcon.addEventListener("mouseout", function(e) {
-        markerIcon.style.height = "4px";
-        markerIcon.style.width = "4px";
+        markerIcon.style.height = "10px";
+        markerIcon.style.width = "10px";
+
+        markerIcon.classList.remove("active-marker")
+    });
+
+    markerIcon.addEventListener("click", function(e) {
+        markerIcon.classList.add("active-marker");
     });
 
 
@@ -892,6 +900,9 @@ incidentSelectDate.addEventListener("change", function(e) {
     incidents = articles.filter(article => new Date(article.cct_created) > filterDate);
     listingDiv.innerHTML = "";
     incidentCount.innerHTML = "Incidents: " + incidents.length;
+
+    // reset the toggler
+    toggleIncidents.checked = false;
 
     createAlertListing(incidents);
 
