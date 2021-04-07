@@ -508,8 +508,10 @@
         .incident-detail-tab {
             position: absolute;
             left: 0;
-            right:55px;
+            /* right:55px; */
+            right:60%;
             z-index: 3;
+            top:0%;
             bottom: 0%;
             height: 0vh;
             overflow: hidden;
@@ -518,7 +520,7 @@
         }
 
         .incident-detail-tab.open {
-            height: 30vh;
+            height: 60vh;
         }
 
         .header-title {
@@ -547,9 +549,9 @@
             cursor: pointer;
             background-color: #252b3b;
             color:white;
-            padding: 0.5rem 0.2em;
+            padding: 0.5rem 1em;
             font-size: 0.75rem;
-            flex: 1;
+            flex: auto;
             text-align: center;
         }
 
@@ -562,8 +564,8 @@
             color: white;
             padding: 0.5rem 1em;
             font-size: 0.75rem;
-            height: 20vh;
-            overflow-y: auto;
+            /* height: 20vh; */
+            /* overflow-y: auto; */
         }
 
         @media screen and (max-width:768px){
@@ -583,13 +585,15 @@
                 display: flex;
             }
 
+            .incident-detail-tab {
+                bottom: 0%;
+                right:55px;
+                top:auto;
+            }
+
             .incident-detail-tab.open {
                 right: 60px;
                 height: 40vh;
-            }
-
-            .header-item {
-                height: 45px;
             }
 
             .side-tab {
@@ -657,7 +661,7 @@
             }
 
             .header-item {
-                height: 45px;
+                font-size: 0.5rem;
             }
 
             .side-tab {
@@ -706,7 +710,7 @@
 <body>
     <div class="container" id="container">
         <div class="logo-div">
-            <img src="images/logo.png" alt="">
+            <img src="https://davincikab.github.io/marine_incidences/images/logo.png" alt="maritime logo">
         </div>
 
         <div class="incident-detail-tab" id="incident-detail-tab">
