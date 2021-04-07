@@ -20,6 +20,49 @@ var vesselFamily = [
     {'Unspecified Ship':[]}
 ];
 
+var incidentDetailTab = document.getElementById("incident-detail-tab");
+var closeIncidentDetailTab = document.getElementById("close-detail-tab");
+
+closeIncidentDetailTab.onclick = function(e) {
+    incidentDetailTab.classList.remove('open');
+};
+
+var overviewSection = document.getElementById("overview");
+var descriptionSection = document.getElementById("description-section");
+var analysisSection = document.getElementById("analysis-section");
+
+var headerItem = document.querySelectorAll(".header-item");
+let activeItem = document.querySelector(".header-item.active");;
+let activeSection = overviewSection;
+
+headerItem.forEach(item => {
+    item.addEventListener("click", function(e) {
+        hideTabs();
+
+        let { dataset: { href }} = e.target;
+
+        this.classList.add('active');
+        activeItem = this;
+
+        // toggle the hidden section
+        let element = document.getElementById(href);
+        element.classList.remove('d-none');
+
+        activeSection = element;
+    });
+});
+
+function hideTabs() {
+    activeSection.classList.add("d-none");
+    activeItem.classList.remove("active");
+
+    // headerItem.forEach(item => {
+    //     if(item != activeItem) {
+    //         item.classList.remove('active');
+    //     }
+    // });
+}
+
 
 var listingDiv = document.getElementById("listing-div");
 var mapWrapperContainer = document.getElementById("container");
@@ -343,6 +386,20 @@ function createMarker(item) {
         console.log(e);
 
         dragElement(e.target._container, e.target._content, e.target._tip);
+
+        // update the respective section
+        incidentDetailTab.classList.add('open');
+        let utcDate = new Date(item.date).toUTCString();
+
+        overviewSection.innerHTML = item.overview;
+        overviewSection.innerHTML += "<div class='d-flex'>" +
+            "<div class='mr-2'><i class='fa fa-map-marker'></i> " + item.country + "</div>" +
+            "<div><i class='fa fa-clock-o'></i> " + utcDate + "</div>" +
+            "</div>";
+
+        descriptionSection.innerHTML = item.event_description;
+        analysisSection.innerHTML = item.analysis;
+
     });
 
     // get icon
@@ -396,9 +453,13 @@ function getPopupContent(item) {
     "<div class='article-info'>" +
         "<div class='article-title'>" + item.country + "; " + item.vessel_name +"; " + item.closest_landmark+  "</div>" +
         "<div><i class='fa fa-clock-o'></i> " + dayDate +" "+ monthName  + " " + year +" " + item.ship_type +"</div>"+
-        "<p>Overview  Event Description Analysis and Additional Information</p>"+
+        "<p> Event Description Analysis and Additional Information</p>"+
     "</div>" +
  "</div>";
+}
+
+function getUTC() {
+
 }
 
 function createAlertListing(alerts) {
