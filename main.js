@@ -2,6 +2,7 @@ var
     articles, 
     incidents, 
     articleMarkers = countries = []
+
 var vesselTypes = ['Container Ship', 'Ro-Ro/Vehicles Carrier, Reefer', 'Aggregates Carrier', 'Cement Carrier', 
 'Ore Carrier', 'Livestock Carrier', 'OBO Carrier', 'Heavy Load Carrier', 'Barge', 'Inland Cargo', 'Special Cargo', 'Other Cargo'];
 
@@ -103,7 +104,7 @@ var hraBoundary = {
     "name": "hra",
     "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
     "features": [
-        { "type":"Feature", "geometry": { "type":"LineString", "coordinates":[[50.0000, -5.0000], [55.0000, 0.0000], [60.000, 10.0000], [60.0000, 14.000]]}},
+        { "type":"Feature", "geometry": { "type":"LineString", "coordinates":[[50.0000, -5.0000], [55.0000, 0.0000], [60.000, 10.0000], [60.0000, 14.000],[58.8082, 15]]}},
     ]
 };
 
@@ -483,27 +484,27 @@ function displayItemInfo(itemId) {
     
     overviewSection.innerHTML = item.overview + "<div class='overview-content'>" +
         "<div class='d-flex'>"+
-            "<div><img src='/Icon/warning.png' /> Type of Alert:</div>" + 
+            "<div><img src='https://lilamiaou.github.io/maritime_tracking/Icon/warning.png' /> Type of Alert:</div>" + 
             "<div>" + item.category + "</div>" +
         "</div>" +
         "<div class='d-flex'>"+
-            "<div><img src='/Icon/planet-earth.png' /></i> Date:</div>" + 
+            "<div><img src='https://lilamiaou.github.io/maritime_tracking/Icon/planet-earth.png' /></i> Date:</div>" + 
             "<div>" + item.country + "</div>" +
         "</div>" +
         "<div class='d-flex'>"+
-            "<div><img src='/Icon/calendar.png' /> Date:</div>" + 
+            "<div><img src='https://lilamiaou.github.io/maritime_tracking/Icon/calendar.png' /> Date:</div>" + 
             "<div>" + utcDate + "</div>" +
         "</div>" +
         "<div class='d-flex'>"+
-            "<div><img src='/Icon/map.png' /></i> Coordinates:</div>" + 
-            "<div>" + item.coordinates + "</div>" +
+            "<div><img src='https://lilamiaou.github.io/maritime_tracking/Icon/map.png' /></i> Coordinates:</div>" + 
+            "<div>" + item.geo_code + "</div>" +
         "</div>" +
         "<div class='d-flex'>"+
-            "<div><img src='/Icon/landmark.png' /> Closest Landmark:</div>" + 
+            "<div><img src='https://lilamiaou.github.io/maritime_tracking/Icon/landmark.png' /> Closest Landmark:</div>" + 
             "<div>" + item.closest_landmark + "</div>" +
         "</div>" +
         "<div class='d-flex'>"+
-            "<div><img src='/Icon/vessel.png' /> Vessel Type:</div>" + 
+            "<div><img src='https://lilamiaou.github.io/maritime_tracking/Icon/vessel.png' /> Vessel Type:</div>" + 
             "<div>" + item.ship_type + "</div>" +
         "</div>" +
         "<div>"+  photo +"</div>"+
