@@ -100,7 +100,7 @@
 
         .filter-tab {
             position: absolute;
-            padding: 5px 15px;
+            padding: 10px 15px 20px;
             top:0%;
             right:-300px;
             height: auto;
@@ -126,6 +126,7 @@
 
         .tab-title {
             font-size: 1.2rem;
+            margin:0.3em 0 !important;
             color:white;
         }
 
@@ -151,7 +152,7 @@
             padding:4px 8px;
             font-family: inherit;
             color:white;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
         }
 
         .article-title {
@@ -181,8 +182,8 @@
 
         /* custom marker */
         .div-marker {
-            height: 10px;
-            width: 10px;
+            height: 5px;
+            width: 5px;
             box-shadow: 2px 2px 0.5em #453b3b;
             background-color: black;
             cursor: pointer;
@@ -256,7 +257,7 @@
 
         /* layer tab */
         #layer-tab {
-            padding: 5px 15px;
+            padding: 5px 15px 20px;
             font-size: 16px;
             top: 0%;
         }
@@ -283,7 +284,8 @@
 
         /* vessel tab */
         #vessel-tab {
-            height: 400px;
+            max-height: 60vh;
+            overflow-y: auto;
         }
 
         /* incidents tab */
@@ -307,6 +309,8 @@
         .collapse {
             margin-left: 1em;
             transition: all 0.3s linear;
+            height:0px;  
+            overflow: hidden;
             /* display: none; */
         }
 
@@ -342,7 +346,8 @@
 
         /* country tab */
         #country-tab {
-            height: 400px;
+            max-height: 70vh;
+            overflow-y: auto;
         }
 
         /* button */
@@ -410,14 +415,36 @@
         }
         
         .popup-header {
-            padding: 0.5rem;
+            padding: 0.3rem;
             color: white;
             text-transform: uppercase;
             font-weight: 600;
             cursor: move;
+            font-size: 0.9rem;
         }
 
-        .article-info p {
+        .overview-content {
+            padding: 1em;
+        }
+
+        .overview-content > div {
+            justify-content: space-between;
+            margin: 0.5em;
+        }
+
+        .overview-content > div > div:first-child {
+            display: flex;
+            align-items: center;
+        }
+
+        .overview-content > div > div img {
+            height: 16px;
+            margin-right: 0.5em;
+        }
+
+        .article-info p span{
+            margin: 0 4px 0px 0px;
+            cursor:pointer;
             /* font-size: 0.9rem; */
         }
 
@@ -428,10 +455,9 @@
         }
 
         #info-tab {
-            padding: 0 8px;
             height: 60%;
             font-size: 0.75rem;
-            overflow-y: scroll;
+            overflow-y: auto;
         }
 
         .summary-div {
@@ -464,7 +490,7 @@
 
         #listing-div {
             margin: 0.2em 0;
-            height: 300px;
+            height: 60vh;
             overflow-y: scroll;
         }
 
@@ -618,10 +644,10 @@
             .filter-tab {    
                 position: absolute;
                 top: 2%;
-                right: 10%;
+                right: -300px;
                 height: 90vh;
                 width: 350px;
-                display: none;
+                /* display: none; */
                 background-color: #193341;
                 z-index: 2;
                 box-shadow: 1px 1px 0.5em #09090b;
@@ -662,7 +688,7 @@
 
             .incident-header .header-item {
                 font-size: 0.5rem;
-                height: 50px;
+                height: 20px;
             }
 
             .side-tab {
@@ -692,10 +718,8 @@
                 position: absolute;
                 top: 2%;
                 height: 90vh;
-                width: auto;
-                left: 5%;
-                right: 70px;
-                display: none;
+                width: 250px;
+                right: -300px;
                 background-color: var(--gray);
                 z-index: 2;
                 box-shadow: 2px 2px 0.5em var(--gray2);
@@ -708,6 +732,9 @@
                 z-index: 2;
                 left:1%;
                 display: block;
+            }
+            .overview-content {
+                padding: 0.1em;
             }
         }
     </style>
@@ -905,15 +932,15 @@
                 <i class="fa fa-times"></i>
             </span>
 
-            <h3 class="tab-title" style="font-size: 22px; color: #ffffff; margin-top: 0;">Map Layers</h3>
+            <h3 class="tab-title" style="font-size: 22px; color: #ffffff;">Map Layers</h3>
             <div class="form-group active">
                 <input type="checkbox" name="articles" id="articles" checked>
-                <label for="inputState">M.A.R.E</label>
+                <label for="inputState">Incidents</label>
             </div>
 
             <div class="form-group active">
                 <input type="checkbox" name="incidents" id="incidents" checked>
-                <label for="inputState">Incidents</label>
+                <label for="inputState">Incidents Heatmap</label>
             </div>
 
             <div class="form-group">

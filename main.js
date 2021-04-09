@@ -52,6 +52,10 @@ headerItem.forEach(item => {
     });
 });
 
+function setActiveTab() {
+
+}
+
 function hideTabs() {
     activeSection.classList.add("d-none");
     activeItem.classList.remove("active");
@@ -108,13 +112,14 @@ var jwcBoundary = {
     "name": "era",
     "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
     "features": [
-        { "type":"Feature", "geometry": { "type":"LineString", "coordinates":[[0.200, 6.1125], [3.0000, -0.6667], [8.7000, -0.6667]]}},
+        { "type":"Feature", "geometry": { "type":"LineString", "coordinates":[[0.3371, 5.7785], [3.0000, -0.6667], [8.7000, -0.6667]]}},
         { "type":"Feature", "geometry": { "type":"LineString", "coordinates":[[58.000, 15.000], [65.0000, 15.000], [65.0000, -12.000], [58.0000, -12.000], [58.000, 15.000] ]}}
     ]
 };
 
 // map load event
 map.on("load", function(e) {
+    map.on("click", console.log);
       // load icons
 
       // heatmap
@@ -377,7 +382,7 @@ function createMarker(item) {
 
     // popup content
     var popup = new mapboxgl.Popup({focusAfterOpen:false, closeOnMove:false, closeOnClick:false})
-      .setMaxWidth('280px')
+      .setMaxWidth('350px')
       .setHTML(popupContent);
     
     // popup events
@@ -386,45 +391,7 @@ function createMarker(item) {
         console.log(e);
 
         dragElement(e.target._container, e.target._content, e.target._tip);
-
-        // update the respective section
-        incidentDetailTab.classList.add('open');
-        let utcDate = new Date(item.date).toUTCString();
-
-        overviewSection.innerHTML = item.overview;
-        overviewSection.innerHTML += "<div>" +
-            "<div class='d-flex'>"+
-                "<div><i class='fa fa-clock-o'></i> Type of Alert:</div>" + 
-                "<div>" + item.category + "<div>" +
-            "</div>" +
-            "<div class='d-flex'>"+
-                "<div><i class='fa fa-map-marker'></i> Date:</div>" + 
-                "<div>" + item.country + "<div>" +
-            "</div>" +
-            "<div class='d-flex'>"+
-                "<div><i class='fa fa-clock-o'></i> Date:</div>" + 
-                "<div>" + utcDate + "<div>" +
-            "</div>" +
-            "<div class='d-flex'>"+
-                "<div><i class='fa fa-map'></i> Coordinates:</div>" + 
-                "<div>" + item.coordinates + "<div>" +
-            "</div>" +
-            "<div class='d-flex'>"+
-                "<div><i class='fa fa-clock-o'></i> Closest Landmark:</div>" + 
-                "<div>" + item.closest_landmark + "<div>" +
-            "</div>" +
-            "<div class='d-flex'>"+
-                "<div><i class='fa fa-clock-o'></i> Vessel Type:</div>" + 
-                "<div>" + item.ship_type + "<div>" +
-            "</div>" +
-            "<div>"+
-                item.photo ? "<img src='" + item.photo +"' alt=''/>" :"" +
-            "</div>"+
-            "</div>";
-
-        descriptionSection.innerHTML = item.event_description;
-        analysisSection.innerHTML = item.analysis;
-
+        addListenerToPopup();
     });
 
     // get icon
@@ -432,15 +399,15 @@ function createMarker(item) {
     var markerIcon = document.createElement("div");
 
     markerIcon.addEventListener("mouseover", function(e) {
-        markerIcon.style.height = "13px";
-        markerIcon.style.width = "13px";
+        markerIcon.style.height = "10px";
+        markerIcon.style.width = "10px";
 
         markerIcon.classList.add("active-marker");
     });
 
     markerIcon.addEventListener("mouseout", function(e) {
-        markerIcon.style.height = "10px";
-        markerIcon.style.width = "10px";
+        markerIcon.style.height = "5px";
+        markerIcon.style.width = "5px";
 
         markerIcon.classList.remove("active-marker")
     });
@@ -478,9 +445,74 @@ function getPopupContent(item) {
     "<div class='article-info'>" +
         "<div class='article-title'>" + item.country + "; " + item.vessel_name +"; " + item.closest_landmark+  "</div>" +
         "<div><i class='fa fa-clock-o'></i> " + dayDate +" "+ monthName  + " " + year +" " + item.ship_type +"</div>"+
-        "<p> Event Description Analysis and Additional Information</p>"+
+        "<p class='item-toggle' data-id='"+ item._ID +"'>"+
+            "<span data-id='"+ item._ID +"' data-href='overview'>Overview</span> "+
+            "<span data-id='"+ item._ID +"' data-href='description-section'>Event Description</span>"+
+            "<span data-id='"+ item._ID +"' data-href='analysis-section'>Analysis and Additional Information</span></p>"+
     "</div>" +
  "</div>";
+}
+
+function addListenerToPopup() {
+    let items = document.querySelectorAll("p span");
+    items.forEach(item => {
+        item.onclick = function(e) {
+            // get the item id
+            incidentDetailTab.classList.add('open');
+            let { id, href } = e.target.dataset;
+
+            // udpate the active section
+            let section = document.querySelector(".header-item[data-href="+ href +"]");
+            console.log(section);
+            section.click();
+
+            // update the side tab sections
+            displayItemInfo(id);
+        }
+    });
+}
+
+function displayItemInfo(itemId) {
+    let item = articles.find(article => article._ID == itemId);
+
+    // update with the 
+    // update the respective section
+    let utcDate = new Date(item.date).toUTCString();
+
+    let photo = item.photo ? "<img src='" + item.photo +"' alt=''/>" :"";
+    
+    overviewSection.innerHTML = item.overview + "<div class='overview-content'>" +
+        "<div class='d-flex'>"+
+            "<div><img src='/Icon/warning.png' /> Type of Alert:</div>" + 
+            "<div>" + item.category + "</div>" +
+        "</div>" +
+        "<div class='d-flex'>"+
+            "<div><img src='/Icon/planet-earth.png' /></i> Date:</div>" + 
+            "<div>" + item.country + "</div>" +
+        "</div>" +
+        "<div class='d-flex'>"+
+            "<div><img src='/Icon/calendar.png' /> Date:</div>" + 
+            "<div>" + utcDate + "</div>" +
+        "</div>" +
+        "<div class='d-flex'>"+
+            "<div><img src='/Icon/map.png' /></i> Coordinates:</div>" + 
+            "<div>" + item.coordinates + "</div>" +
+        "</div>" +
+        "<div class='d-flex'>"+
+            "<div><img src='/Icon/landmark.png' /> Closest Landmark:</div>" + 
+            "<div>" + item.closest_landmark + "</div>" +
+        "</div>" +
+        "<div class='d-flex'>"+
+            "<div><img src='/Icon/vessel.png' /> Vessel Type:</div>" + 
+            "<div>" + item.ship_type + "</div>" +
+        "</div>" +
+        "<div>"+  photo +"</div>"+
+        "</div>";
+
+    // console.log("Overview");
+
+    descriptionSection.innerHTML = item.event_description;
+    analysisSection.innerHTML = item.analysis;
 }
 
 function getUTC() {
@@ -752,30 +784,34 @@ collapseToggler.forEach( toggler => {
         let activeToggler = e.target;
 
         // e.stopPropagation();
+        console.log(e);
         if(e.target != this) {
-            activeToggler = e.target.parentElement;
             return;
         }
 
         let dataId = activeToggler.dataset.href;
-        let caretElement = activeToggler.children[2];
+        console.log(activeToggler.children);
 
-        // close any other collapse
-        closeAllCollapse();
+        let caretElement = activeToggler.children[1];
 
         // get the collapse element
         let activeCollapse = document.getElementById(dataId);
+        let height = window.getComputedStyle(activeCollapse).getPropertyValue("height");
 
+        // console.log();
         // get element height
-        if(activeCollapse.style.height == "0px") {
+        if(height == "0px") {
+            // close any other collapse
+            closeAllCollapse();
+
             activeCollapse.classList.remove("close");
 
             let height = activeCollapse.scrollHeight;
             activeCollapse.style.height = height + "px";  
 
             caretElement.innerHTML = "<i class='fa fa-caret-up'></i>";
-            return;
         } else {
+            console.log("Closing");
             activeCollapse.style.height = 0 + "px";  
 
             // update caret
@@ -788,7 +824,7 @@ collapseToggler.forEach( toggler => {
 
 function closeAllCollapse() {
     document.querySelectorAll(".collapse").forEach(collapse => {
-        collapse.classList.add("close");
+        collapse.style.height = 0 + "px";  
 
         // change the caret to 
         let carets = document.querySelectorAll(".caret");
@@ -891,19 +927,22 @@ var incidentsType = [
     {name:'Sea Robbery', bg_color:"#ffff00"},
     {name: 'Piracy Attack', bg_color:"#7030a0"}, 
     {name:'Piracy Kidnap / Hijack', bg_color:"#ff0000"},
-    {name: 'Criminality Robbery', bg_color:"#ffffff"}, 
+    // {name: 'Criminality Robbery', bg_color:"#ffffff"}, 
+    {name: 'Criminality', bg_color:"#ffffff"},
     // {name: 'Criminality Kidnap', bg_color:"#ffffff"}, 
     {name: 'Activism', bg_color:"#833c0b"},
     {name: 'Smuggling / Trafficking', bg_color:"#806000"},
     {name: 'IUU Fishing', bg_color:"#959595"}, 
     {name: 'Storewaways', bg_color:"#00b050"},
     {name: 'Suspicious', bg_color:"#92d050"},
-    {name:"Militancy IED / WIED / Seamines", bg_color:"#000000"},
-    {name: 'Militancy Assault', bg_color:"#000000"}, 
+    {name: 'Militancy', bg_color:"#000000"},
+    // {name:"Militancy IED / WIED / Seamines", bg_color:"#000000"},
+    // {name: 'Militancy Assault', bg_color:"#000000"}, 
     // {name: 'Militancy Kidnap', bg_color:"#000000"}, 
     // {name: 'Militancy Sabotage', bg_color:"#000000"}, 
-    {name: 'Law Enforcement Drill', bg_color:"#00b0f0"},
-    {name: 'Law Enforcement Operation', bg_color:"#00b0f0"}, 
+    // {name: 'Law Enforcement Drill', bg_color:"#00b0f0"},
+    // {name: 'Law Enforcement Operation', bg_color:"#00b0f0"}, 
+    {name: 'Law Enforcement', bg_color:"#00b0f0"}, 
     {name: 'Others', bg_color:"#ffc000"}
 ];
 
@@ -1010,7 +1049,7 @@ toggleIncidents.addEventListener("change", function(e) {
 // date tab and incident tab
 var dateTab = document.getElementById("date-tab");
 var openDateTab = document.getElementById("open-date-filter");
-var closeDateTab = document.getElementById("close-date-tab")
+var closeDateTab = document.getElementById("close-date-tab");
 
 openDateTab.addEventListener("click", function(e) {
     console.log("Home coming");
