@@ -444,8 +444,8 @@ function getPopupContent(item) {
     "<div class='popup-header' style='background-image: linear-gradient(45deg, #ddd5d5d9, transparent); background-blend-mode:darken; background-color:"+ item.bg_color + "; color:"+ color +";'>" + item.category + "</div>"+
     // "<img src='"+ item.photo +"' alt='" + item.title + "' class='popup-img' />" +
     "<div class='article-info'>" +
-        "<div class='article-title'>" + item.country + "; " + item.vessel_name +"; " + item.closest_landmark+  "</div>" +
-        "<div><i class='fa fa-clock-o'></i> " + dayDate +" "+ monthName  + " " + year +" " + item.ship_type +"</div>"+
+        "<div class='article-title'>" + item.country + "// " + item.vessel_name +" - " + item.closest_landmark+  "</div>" +
+        "<div><i class='fa fa-clock-o'></i> " + dayDate +" "+ monthName  + " " + year + " - " + item.ship_type +"</div>"+
         "<p class='item-toggle' data-id='"+ item._ID +"'>"+
             "<span data-id='"+ item._ID +"' data-href='overview'>Overview</span> "+
             "<span data-id='"+ item._ID +"' data-href='description-section'>Event Description</span>"+
@@ -480,7 +480,7 @@ function displayItemInfo(itemId) {
     // update the respective section
     let utcDate = new Date(item.date).toUTCString();
 
-    let photo = item.photo ? "<img src='" + item.photo +"' alt=''/>" :"";
+    let photo = item.photo_illustration ? "<img src='" + item.photo_illustration +"' alt=''/>" :"";
     
     overviewSection.innerHTML = item.overview + "<div class='overview-content'>" +
         "<div class='d-flex'>"+
@@ -574,8 +574,9 @@ function zoomToAlert(alertId) {
         
         map.once("zoomend", function(e) {
             // load a popup
-            new mapboxgl.Popup()
+            new mapboxgl.Popup({focusAfterOpen:false})
                 .setHTML(getPopupContent(activeAlert))
+                .setMaxWidth("350px")
                 .setLngLat(center)
                 .addTo(map);
         });
