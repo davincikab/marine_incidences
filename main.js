@@ -447,8 +447,8 @@ function getPopupContent(item) {
         "<div class='article-title'>" + item.country + "// " + item.vessel_name +" - " + item.closest_landmark+  "</div>" +
         "<div><i class='fa fa-clock-o'></i> " + dayDate +" "+ monthName  + " " + year + " - " + item.ship_type +"</div>"+
         "<p class='item-toggle' data-id='"+ item._ID +"'>"+
-            "<span data-id='"+ item._ID +"' data-href='overview'>Overview</span> "+
-            "<span data-id='"+ item._ID +"' data-href='description-section'>Event Description</span>"+
+            "<span data-id='"+ item._ID +"' data-href='overview'>Overview  | </span> "+
+            "<span data-id='"+ item._ID +"' data-href='description-section'>Event Description  | </span>"+
             "<span data-id='"+ item._ID +"' data-href='analysis-section'>Analysis and Additional Information</span></p>"+
     "</div>" +
  "</div>";
