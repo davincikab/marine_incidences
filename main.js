@@ -423,9 +423,21 @@ function createMarker(item) {
     markerIcon.classList.add("div-marker");
       // markerIcon.classList.add(icon);
 
+    // check the lat and lng
+    if(!parseFloat(item._lng.trim()) || !parseFloat(item._lat.trim())) {
+        return;
+    }
+
+    let lat = parseFloat(item._lat.trim());
+    let lng = parseFloat(item._lng.trim());
+
+    if(lat > 90 || lat < -90 || lng > 180 || lng < -180) {
+        return;
+    }
+
     // custom markers
     var marker  = new mapboxgl.Marker({element:markerIcon})
-      .setLngLat([parseFloat(item._lng), parseFloat(item._lat)])
+      .setLngLat([parseFloat(item._lng.trim()), parseFloat(item._lat.trim())])
       .setPopup(popup)
       .addTo(map);
 
