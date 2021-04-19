@@ -104,7 +104,7 @@ var hraBoundary = {
     "name": "hra",
     "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
     "features": [
-        { "type":"Feature", "geometry": { "type":"LineString", "coordinates":[[50.0000, -5.0000], [55.0000, 0.0000], [60.000, 10.0000], [60.0000, 14.000],[58.8082, 15]]}},
+        { "type":"Feature", "geometry": { "type":"LineString", "coordinates":[[39.1846, -5.0000],[50.0000, -5.0000], [55.0000, 0.0000], [60.000, 10.0000], [60.0000, 14.000],[55.24378, 17.36304]]}},
     ]
 };
 
