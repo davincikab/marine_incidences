@@ -354,12 +354,31 @@ map.on("load", function(e) {
         incidentCount.innerHTML = "Incidents: "  + incidents.length;
         createAlertListing(incidents);
 
-        // get the countries 
-        countries = [...new Set(data.map(article => article.country))];
+        // create an object with country name and count
+        let country = data.map(article => article.country).sort();
+        country = country.reduce((a, b) => {
+            let cntries = country.filter(cntry => cntry == b);
+
+            if(a.find(cnt => cnt.name == b)){
+                // a = a;
+            } else {
+                let obj = {
+                    name:b,
+                    count:cntries.length
+                };
+
+                a = [...a, obj];
+            }
+
+            return a;
+            
+        }, []).sort((a, b) => b.count - a.count);
+
+        // create a set
+        countries = [...new Set(country.map(cntry => cntry.name))];
         renderCountryFilter(countries);
         
        
-
         // incidents
         var incidentGeojson = createGeojson(data);
         map.getSource('incidents').setData(incidentGeojson);
