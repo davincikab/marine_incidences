@@ -165,42 +165,42 @@ map.on("load", function(e) {
       }
     });
 
-    // map.addSource('eez-boundary', {
-    //     "type":"vector",
-    //     "url":"mapbox://bldgit13.eez-boundary"
-    // });
+    map.addSource('eez-boundary', {
+        "type":"geojson",
+        "data":"{'type':'FeatureCollection', 'features':[]}"
+    });
 
-    // map.addLayer({
-    //     "id":'ee-zones',
-    //     "source":'eez-boundary',
-    //     "source-layer":"eez-boundary",
-    //     "type":"line",
-    //     "paint":{
-    //         "line-color":"#d3e289",
-    //         "line-width":1
-    //     },
-    //     "layout":{
-    //         "visibility":"none"
-    //     }
-    // });
+    map.addLayer({
+        "id":'ee-zones',
+        "source":'eez-boundary',
+        "source-layer":"eez-boundary",
+        "type":"line",
+        "paint":{
+            "line-color":"#d3e289",
+            "line-width":1
+        },
+        "layout":{
+            "visibility":"none"
+        }
+    });
 
-    // map.addSource('archipelagic-waters', {
-    //     "type":"vector",
-    //     "url":"mapbox://bldgit13.archipelagic-waters"
-    // });
+    map.addSource('archipelagic-waters', {
+        "type":"geojson",
+        "url":"{'type':'FeatureCollection', 'features':[]}"
+    });
 
-    // map.addLayer({
-    //     "id":'archipelagic-waters',
-    //     "source":'archipelagic-waters',
-    //     "source-layer":"archipelagic-waters",
-    //     "type":"fill",
-    //     "paint":{
-    //         "fill-color":"#d3e289",
-    //     },
-    //     "layout":{
-    //         "visibility":"none"
-    //     }
-    // });
+    map.addLayer({
+        "id":'archipelagic-waters',
+        "source":'archipelagic-waters',
+        "source-layer":"archipelagic-waters",
+        "type":"fill",
+        "paint":{
+            "fill-color":"#d3e289",
+        },
+        "layout":{
+            "visibility":"none"
+        }
+    });
 
     // map.addSource('eez-24nm', {
     //     "type":"vector",
@@ -382,6 +382,20 @@ map.on("load", function(e) {
         // incidents
         var incidentGeojson = createGeojson(data);
         map.getSource('incidents').setData(incidentGeojson);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+    // fetch era boundary
+    fetch("eez_boundary.pbf")
+    .then(data => data.arrayBuffer())
+    .then(response => {
+        // convert the data from geobuf to geojson
+        console.log(response);
+        var buffer = geobuf.encode(geojson, new Pbf());
+
+        map.getSource("eez-boundary").setData(buffer);
     })
     .catch(error => {
         console.error(error);
@@ -777,7 +791,7 @@ vesselFamily.forEach(family => {
 
     let element = `<div class="toggle-collapse" data-href="${id}">
             <div>
-                <input type="checkbox" name="${family.name}" id="${family.name}" class="vessel-family" data-id=${id}>
+                <input type="checkbox" name="${family.name}" id="${family.name}" class="vessel-family" data-id=${id} checked>
                 <label>${family.name}</label>
             </div>
             <span class="caret"><i class='fa fa-caret-down'></i></span>
@@ -796,7 +810,7 @@ vesselFamily.forEach(family => {
     vesselTypes.forEach(vessel => {
         // create a form group
         let element = `<div class="form-group">
-            <input type="checkbox" name="${vessel}" id="${vessel}" class="vessel-type">
+            <input type="checkbox" name="${vessel}" id="${vessel}" class="vessel-type" checked>
                <label for="${vessel}">${vessel}</label>
         </div>`;
        
@@ -986,7 +1000,7 @@ var incidencesElement = document.getElementById("incidences");
 incidentsType.forEach(incident => {
     // create a form group
     let element = `<div class="form-group">
-        <input type="checkbox" name="${incident.name}" id="${incident.name}" class="incident-type">
+        <input type="checkbox" name="${incident.name}" id="${incident.name}" class="incident-type" checked>
         <span class="dot" style="background-color:${incident.bg_color}"></span>
         <label for="${incident.name}">${incident.name}</label>
     </div>`;
@@ -1145,7 +1159,7 @@ function renderCountryFilter(countries) {
     // create form group
     countries.forEach(country => {
         let element = `<div class="form-group">
-            <input type="checkbox" name="${country}" id="${country}" class="country-filter">
+            <input type="checkbox" name="${country}" id="${country}" class="country-filter" checked>
             <label for="${country}">${country}</label>
         </div>`;
 
