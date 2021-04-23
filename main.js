@@ -167,40 +167,39 @@ map.on("load", function(e) {
 
     map.addSource('eez-boundary', {
         "type":"geojson",
-        "data":"{'type':'FeatureCollection', 'features':[]}"
+        "data":{"type":"FeatureCollection", "features":[]}
     });
 
     map.addLayer({
         "id":'ee-zones',
         "source":'eez-boundary',
-        "source-layer":"eez-boundary",
         "type":"line",
         "paint":{
             "line-color":"#d3e289",
             "line-width":1
         },
         "layout":{
-            "visibility":"none"
+            "visibility":"visible"
         }
     });
 
-    map.addSource('archipelagic-waters', {
-        "type":"geojson",
-        "url":"{'type':'FeatureCollection', 'features':[]}"
-    });
+    // map.addSource('archipelagic-waters', {
+    //     "type":"geojson",
+    //     "url":"{'type':'FeatureCollection', 'features':[]}"
+    // });
 
-    map.addLayer({
-        "id":'archipelagic-waters',
-        "source":'archipelagic-waters',
-        "source-layer":"archipelagic-waters",
-        "type":"fill",
-        "paint":{
-            "fill-color":"#d3e289",
-        },
-        "layout":{
-            "visibility":"none"
-        }
-    });
+    // map.addLayer({
+    //     "id":'archipelagic-waters',
+    //     "source":'archipelagic-waters',
+    //     "source-layer":"archipelagic-waters",
+    //     "type":"fill",
+    //     "paint":{
+    //         "fill-color":"#d3e289",
+    //     },
+    //     "layout":{
+    //         "visibility":"none"
+    //     }
+    // });
 
     // map.addSource('eez-24nm', {
     //     "type":"vector",
@@ -393,8 +392,9 @@ map.on("load", function(e) {
     .then(response => {
         // convert the data from geobuf to geojson
         console.log(response);
-        var buffer = geobuf.encode(geojson, new Pbf());
+        var buffer = geobuf.decode(new Pbf(response));
 
+        console.log(buffer);
         map.getSource("eez-boundary").setData(buffer);
     })
     .catch(error => {
