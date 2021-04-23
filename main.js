@@ -995,6 +995,32 @@ var incidentsType = [
 
 var activeIncidentType = [];
 var incidencesElement = document.getElementById("incidences");
+var toggleAllIncidentType = document.getElementById("incident-all");
+toggleAllIncidentType.onclick = function(e) {
+    var incidentTypeCheckbox = document.querySelectorAll(".incident-type");
+    if(e.target.checked) {
+       // check all the types 
+        incidentTypeCheckbox.forEach( incidentCheckbox => {
+            incidentCheckbox.checked = true;
+        });
+
+        // update the incident type 
+        activeIncidentType = incidentsType.map(incident => incident.name);
+
+        // update the display
+        filterByTypeAndUpdate(activeIncidentType);
+    } else {
+        activeIncidentType = [];
+
+        // toggle the checkbox
+        incidentTypeCheckbox.forEach( incidentCheckbox => {
+            incidentCheckbox.checked = false;
+        });
+
+        // update the display
+        filterByTypeAndUpdate(activeIncidentType);
+    }
+}
 // var incidentTypeCheckbox = document.querySelectorAll("incident-type");
 
 incidentsType.forEach(incident => {
@@ -1021,20 +1047,24 @@ incidentTypeCheckbox.forEach( incident => {
             activeIncidentType = activeIncidentType.filter(incident => incident != name);
        }
 
-        // filter
-        let incidents = activeIncidentType.map(activeIncident => {
-            let articleFilter = articles.filter(article => article.category.includes(activeIncident));
-
-            return articleFilter;
-        }).reduce((a, b) => [...a, ...b], []);
-
-        console.log(incidents);
-
-        clearMarkers();
-        createCategoryMarkers(incidents);
+        
 
     });
 });
+
+function filterByTypeAndUpdate(activeIncidentType) {
+    // filter
+    let incidents = activeIncidentType.map(activeIncident => {
+        let articleFilter = articles.filter(article => article.category.includes(activeIncident));
+
+        return articleFilter;
+    }).reduce((a, b) => [...a, ...b], []);
+
+    console.log(incidents);
+
+    clearMarkers();
+    createCategoryMarkers(incidents);
+}
 
 var incidentTab = document.getElementById("incident-tab");
 var openIncidentTab = document.getElementById("open-incident-tab");
@@ -1171,7 +1201,7 @@ toggleCountriesCheckbox.onclick = function(e) {
         countryFilters.forEach(countryFilter => {
             countryFilter.checked = false;
         });
-        
+
         filterByCountryAndUpdate(activeCountries);
     }
 }
