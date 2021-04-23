@@ -596,6 +596,8 @@
             color: white;
             padding: 0.5rem 1em;
             font-size: 0.7rem;
+            overflow-y: auto;
+            max-height: 60vh;
         }
 
         @media screen and (max-width:768px){
@@ -845,6 +847,10 @@
                 <i class="fa fa-times"></i>
             </span>
 
+            <div class="form-group">
+                <input type="checkbox" name="all" id="vessel-all" class="vessel-all" checked>
+                <label for="vessel-all">Enable/Disable all</label>
+            </div>
             <div id="vessels"></div>
         </div>
 
@@ -855,6 +861,10 @@
 
             <h3 class="tab-title">Incident Type</h3>
 
+            <div class="form-group">
+                <input type="checkbox" name="all" id="incident-all" class="incident-all" checked>
+                <label for="incident-all">Enable/Disable all</label>
+            </div>
             <div class="filter-body" id="incidences">
             </div>
         </div>
@@ -926,7 +936,12 @@
 
             <h3 class="tab-title">Countries</h3> 
 
+            <div class="form-group">
+                <input type="checkbox" name="all" id="country-all" class="country-all" checked>
+                <label for="country-all">Enable/Disable all</label>
+            </div>
             <div class="filter-body" id="countries">
+                
             </div>
         </div>
 

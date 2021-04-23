@@ -371,7 +371,7 @@ map.on("load", function(e) {
 
             return a;
             
-        }, []).sort((a, b) => b.count - a.count);
+        }, []).sort((a, b) => b.name - a.name);
 
         // create a set
         countries = [...new Set(country.map(cntry => cntry.name))];
@@ -1154,6 +1154,28 @@ closeCountryTab.addEventListener("click", function(e) {
 });
 
 var activeCountries = [];
+var toggleCountriesCheckbox = document.getElementById('country-all');
+toggleCountriesCheckbox.onclick = function(e) {
+    let countryFilters = document.querySelectorAll(".country-filter");
+    if(e.target.checked) {
+        activeCountries = [...countries];
+
+       // check all the checkboxes
+       countryFilters.forEach(countryFilter => {
+           countryFilter.checked = true;
+       });
+       // update the map view
+        filterByCountryAndUpdate(activeCountries);
+    } else {
+        activeCountries = [];
+        countryFilters.forEach(countryFilter => {
+            countryFilter.checked = false;
+        });
+        
+        filterByCountryAndUpdate(activeCountries);
+    }
+}
+
 function renderCountryFilter(countries) {
     let countryDiv = document.getElementById("countries");
     // create form group
@@ -1178,21 +1200,25 @@ function renderCountryFilter(countries) {
                 activeCountries = activeCountries.filter(incident => incident != name);
             }
 
-            // filter
-            let countryIncidence = activeCountries.map(activeCountry => {
-                let articleFilter = articles.filter(article => article.country.includes(activeCountry));
-    
-                return articleFilter;
-            }).reduce((a, b) => [...a, ...b], []);
-    
-            console.log(countryIncidence);
-
-            clearMarkers();
-            createCategoryMarkers(countryIncidence);
+            filterByCountryAndUpdate(activeCountries);
         });
     });
 
 
+}
+
+function filterByCountryAndUpdate(activeCountries) {
+    // filter
+    let countryIncidence = activeCountries.map(activeCountry => {
+        let articleFilter = articles.filter(article => article.country.includes(activeCountry));
+
+        return articleFilter;
+    }).reduce((a, b) => [...a, ...b], []);
+
+    console.log(countryIncidence);
+
+    clearMarkers();
+    createCategoryMarkers(countryIncidence);
 }
 
 // toggle layers
