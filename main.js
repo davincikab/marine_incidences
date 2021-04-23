@@ -1034,7 +1034,7 @@ toggleAllIncidentType.onclick = function(e) {
         });
 
         // update the incident type 
-        activeIncidentType = incidentsType.map(incident => incident.name);
+        activeIncidentType = [...new Set(articles.map(article => article.category))];
 
         // update the display
         filterByTypeAndUpdate(activeIncidentType);
@@ -1083,14 +1083,15 @@ incidentTypeCheckbox.forEach( incident => {
 
 function filterByTypeAndUpdate(activeIncidentType) {
     // filter
-    let incidents = activeIncidentType.map(activeIncident => {
-        let articleFilter = articles.filter(article => article.category.includes(activeIncident));
+    // let incidents = activeIncidentType.map(activeIncident => {
+    //     let articleFilter = articles.filter(article => article.category.includes(activeIncident));
 
-        return articleFilter;
-    }).reduce((a, b) => [...a, ...b], []);
+    //     return articleFilter;
+    // }).reduce((a, b) => [...a, ...b], []);
 
+    let incidents = articles.filter(article => activeIncidentType.indexOf(article.category) !=-1);
     console.log(incidents);
-
+   
     clearMarkers();
     createCategoryMarkers(incidents);
 }
@@ -1268,12 +1269,7 @@ function renderCountryFilter(countries) {
 
 function filterByCountryAndUpdate(activeCountries) {
     // filter
-    let countryIncidence = activeCountries.map(activeCountry => {
-        let articleFilter = articles.filter(article => article.country.includes(activeCountry));
-
-        return articleFilter;
-    }).reduce((a, b) => [...a, ...b], []);
-
+    let countryIncidence = articles.filter(article => activeCountries.indexOf(article.country) != -1);
     console.log(countryIncidence);
 
     clearMarkers();
