@@ -741,6 +741,7 @@ function createGeojson(data) {
 
 var activeVesselType = [];
 var vesselElement = document.getElementById("vessels");
+var toggleAllVesselsCheckbox = document.getElementById("vessel-all");
 var vesselFamily = [
     {
         name:'Cargo Vessels',
@@ -781,7 +782,34 @@ var vesselFamily = [
         name:'Unspecified Ship',
         value:[]
     }
-];  
+]; 
+
+toggleAllVesselsCheckbox.onclick = function(e) {
+   // select all the checkboxes 
+   let checkboxes = document.querySelectorAll("#vessels input[type=checkbox]")  
+    if(e.target.checked) {
+        // check all the parent and children 
+        checkboxes.forEach(checkbox => checkbox.checked = true);
+
+        // populate the activeVesselTypes
+        activeVesselType = [...new Set(articles.map(a => a.ship_type))];
+        // activeVesselType = vesselFamily.reduce((a, b) => {
+        //     a = [...a, ...b.value];
+
+        //     return a;
+        // }, []);
+
+        filterAlertsByVesselType(activeVesselType);
+    } else {
+        checkboxes.forEach(checkbox => checkbox.checked = false);
+        activeVesselType = [];
+
+        filterAlertsByVesselType(activeVesselType);
+
+    }
+}
+
+
 
 vesselFamily.forEach(family => {
     // collapse toggle
@@ -935,11 +963,12 @@ vesselTypeCheckbox.forEach(vessel => {
 
 function filterAlertsByVesselType(activeVesselType) {
     // filter
-    let vessels = activeVesselType.map(activeVessel => {
-        let articleFilter = articles.filter(article => article.ship_type.includes(activeVessel));
+    // let vessels = activeVesselType.map(activeVessel => {
+    //     let articleFilter = articles.filter(article => article.ship_type.includes(activeVessel));
 
-        return articleFilter;
-    }).reduce((a, b) => [...a, ...b], []);
+    //     return articleFilter;
+    // }).reduce((a, b) => [...a, ...b], []);
+    let vessels = articles.filter(article => activeVesselType.indexOf(article.ship_type) != -1);
 
     console.log(vessels);
 
