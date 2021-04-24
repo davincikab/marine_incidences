@@ -387,7 +387,7 @@ map.on("load", function(e) {
     });
 
     // fetch era boundary
-    fetch("eez_boundary.pbf")
+    fetch("https://davincikab.github.io/marine_incidences/eez_boundary.pbf")
     .then(data => data.arrayBuffer())
     .then(response => {
         // convert the data from geobuf to geojson
