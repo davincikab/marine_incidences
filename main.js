@@ -167,40 +167,39 @@ map.on("load", function(e) {
 
     map.addSource('eez-boundary', {
         "type":"geojson",
-        "data":"{'type':'FeatureCollection', 'features':[]}"
+        "data":{"type":"FeatureCollection", "features":[]}
     });
 
     map.addLayer({
         "id":'ee-zones',
         "source":'eez-boundary',
-        "source-layer":"eez-boundary",
         "type":"line",
         "paint":{
             "line-color":"#d3e289",
             "line-width":1
         },
         "layout":{
-            "visibility":"none"
+            "visibility":"visible"
         }
     });
 
-    map.addSource('archipelagic-waters', {
-        "type":"geojson",
-        "url":"{'type':'FeatureCollection', 'features':[]}"
-    });
+    // map.addSource('archipelagic-waters', {
+    //     "type":"geojson",
+    //     "url":"{'type':'FeatureCollection', 'features':[]}"
+    // });
 
-    map.addLayer({
-        "id":'archipelagic-waters',
-        "source":'archipelagic-waters',
-        "source-layer":"archipelagic-waters",
-        "type":"fill",
-        "paint":{
-            "fill-color":"#d3e289",
-        },
-        "layout":{
-            "visibility":"none"
-        }
-    });
+    // map.addLayer({
+    //     "id":'archipelagic-waters',
+    //     "source":'archipelagic-waters',
+    //     "source-layer":"archipelagic-waters",
+    //     "type":"fill",
+    //     "paint":{
+    //         "fill-color":"#d3e289",
+    //     },
+    //     "layout":{
+    //         "visibility":"none"
+    //     }
+    // });
 
     // map.addSource('eez-24nm', {
     //     "type":"vector",
@@ -372,7 +371,7 @@ map.on("load", function(e) {
 
             return a;
             
-        }, []).sort((a, b) => b.count - a.count);
+        }, []).sort((a, b) => b.name - a.name);
 
         // create a set
         countries = [...new Set(country.map(cntry => cntry.name))];
@@ -393,8 +392,9 @@ map.on("load", function(e) {
     .then(response => {
         // convert the data from geobuf to geojson
         console.log(response);
-        var buffer = geobuf.encode(geojson, new Pbf());
+        var buffer = geobuf.decode(new Pbf(response));
 
+        console.log(buffer);
         map.getSource("eez-boundary").setData(buffer);
     })
     .catch(error => {
@@ -741,6 +741,7 @@ function createGeojson(data) {
 
 var activeVesselType = [];
 var vesselElement = document.getElementById("vessels");
+var toggleAllVesselsCheckbox = document.getElementById("vessel-all");
 var vesselFamily = [
     {
         name:'Cargo Vessels',
@@ -781,7 +782,34 @@ var vesselFamily = [
         name:'Unspecified Ship',
         value:[]
     }
-];  
+]; 
+
+toggleAllVesselsCheckbox.onclick = function(e) {
+   // select all the checkboxes 
+   let checkboxes = document.querySelectorAll("#vessels input[type=checkbox]")  
+    if(e.target.checked) {
+        // check all the parent and children 
+        checkboxes.forEach(checkbox => checkbox.checked = true);
+
+        // populate the activeVesselTypes
+        activeVesselType = [...new Set(articles.map(a => a.ship_type))];
+        // activeVesselType = vesselFamily.reduce((a, b) => {
+        //     a = [...a, ...b.value];
+
+        //     return a;
+        // }, []);
+
+        filterAlertsByVesselType(activeVesselType);
+    } else {
+        checkboxes.forEach(checkbox => checkbox.checked = false);
+        activeVesselType = [];
+
+        filterAlertsByVesselType(activeVesselType);
+
+    }
+}
+
+
 
 vesselFamily.forEach(family => {
     // collapse toggle
@@ -935,11 +963,12 @@ vesselTypeCheckbox.forEach(vessel => {
 
 function filterAlertsByVesselType(activeVesselType) {
     // filter
-    let vessels = activeVesselType.map(activeVessel => {
-        let articleFilter = articles.filter(article => article.ship_type.includes(activeVessel));
+    // let vessels = activeVesselType.map(activeVessel => {
+    //     let articleFilter = articles.filter(article => article.ship_type.includes(activeVessel));
 
-        return articleFilter;
-    }).reduce((a, b) => [...a, ...b], []);
+    //     return articleFilter;
+    // }).reduce((a, b) => [...a, ...b], []);
+    let vessels = articles.filter(article => activeVesselType.indexOf(article.ship_type) != -1);
 
     console.log(vessels);
 
@@ -995,6 +1024,32 @@ var incidentsType = [
 
 var activeIncidentType = [];
 var incidencesElement = document.getElementById("incidences");
+var toggleAllIncidentType = document.getElementById("incident-all");
+toggleAllIncidentType.onclick = function(e) {
+    var incidentTypeCheckbox = document.querySelectorAll(".incident-type");
+    if(e.target.checked) {
+       // check all the types 
+        incidentTypeCheckbox.forEach( incidentCheckbox => {
+            incidentCheckbox.checked = true;
+        });
+
+        // update the incident type 
+        activeIncidentType = [...new Set(articles.map(article => article.category))];
+
+        // update the display
+        filterByTypeAndUpdate(activeIncidentType);
+    } else {
+        activeIncidentType = [];
+
+        // toggle the checkbox
+        incidentTypeCheckbox.forEach( incidentCheckbox => {
+            incidentCheckbox.checked = false;
+        });
+
+        // update the display
+        filterByTypeAndUpdate(activeIncidentType);
+    }
+}
 // var incidentTypeCheckbox = document.querySelectorAll("incident-type");
 
 incidentsType.forEach(incident => {
@@ -1021,20 +1076,25 @@ incidentTypeCheckbox.forEach( incident => {
             activeIncidentType = activeIncidentType.filter(incident => incident != name);
        }
 
-        // filter
-        let incidents = activeIncidentType.map(activeIncident => {
-            let articleFilter = articles.filter(article => article.category.includes(activeIncident));
-
-            return articleFilter;
-        }).reduce((a, b) => [...a, ...b], []);
-
-        console.log(incidents);
-
-        clearMarkers();
-        createCategoryMarkers(incidents);
+        
 
     });
 });
+
+function filterByTypeAndUpdate(activeIncidentType) {
+    // filter
+    // let incidents = activeIncidentType.map(activeIncident => {
+    //     let articleFilter = articles.filter(article => article.category.includes(activeIncident));
+
+    //     return articleFilter;
+    // }).reduce((a, b) => [...a, ...b], []);
+
+    let incidents = articles.filter(article => activeIncidentType.indexOf(article.category) !=-1);
+    console.log(incidents);
+   
+    clearMarkers();
+    createCategoryMarkers(incidents);
+}
 
 var incidentTab = document.getElementById("incident-tab");
 var openIncidentTab = document.getElementById("open-incident-tab");
@@ -1154,6 +1214,28 @@ closeCountryTab.addEventListener("click", function(e) {
 });
 
 var activeCountries = [];
+var toggleCountriesCheckbox = document.getElementById('country-all');
+toggleCountriesCheckbox.onclick = function(e) {
+    let countryFilters = document.querySelectorAll(".country-filter");
+    if(e.target.checked) {
+        activeCountries = [...countries];
+
+       // check all the checkboxes
+       countryFilters.forEach(countryFilter => {
+           countryFilter.checked = true;
+       });
+       // update the map view
+        filterByCountryAndUpdate(activeCountries);
+    } else {
+        activeCountries = [];
+        countryFilters.forEach(countryFilter => {
+            countryFilter.checked = false;
+        });
+
+        filterByCountryAndUpdate(activeCountries);
+    }
+}
+
 function renderCountryFilter(countries) {
     let countryDiv = document.getElementById("countries");
     // create form group
@@ -1178,21 +1260,20 @@ function renderCountryFilter(countries) {
                 activeCountries = activeCountries.filter(incident => incident != name);
             }
 
-            // filter
-            let countryIncidence = activeCountries.map(activeCountry => {
-                let articleFilter = articles.filter(article => article.country.includes(activeCountry));
-    
-                return articleFilter;
-            }).reduce((a, b) => [...a, ...b], []);
-    
-            console.log(countryIncidence);
-
-            clearMarkers();
-            createCategoryMarkers(countryIncidence);
+            filterByCountryAndUpdate(activeCountries);
         });
     });
 
 
+}
+
+function filterByCountryAndUpdate(activeCountries) {
+    // filter
+    let countryIncidence = articles.filter(article => activeCountries.indexOf(article.country) != -1);
+    console.log(countryIncidence);
+
+    clearMarkers();
+    createCategoryMarkers(countryIncidence);
 }
 
 // toggle layers
