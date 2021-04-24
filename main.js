@@ -171,7 +171,7 @@ map.on("load", function(e) {
     });
 
     map.addLayer({
-        "id":'ee-zones',
+        "id":'eez-boundary',
         "source":'eez-boundary',
         "type":"line",
         "paint":{
@@ -179,27 +179,32 @@ map.on("load", function(e) {
             "line-width":1
         },
         "layout":{
+            "visibility":"none"
+        }
+    });
+    
+    map.addSource('archipelagic-waters', {
+        "type":"vector",
+        "tiles":[
+            "https://api.maptiler.com/tiles/2247e606-b06c-43d6-add1-acbf612f9cf9/{z}/{x}/{y}.pbf?key=09dkW2PJtwi6Jm9iA0yx"
+        ],
+        'minzoom': 0,
+        'maxzoom': 6
+    });
+
+    map.addLayer({
+        "id":'archipelagic-waters',
+        "source":'archipelagic-waters',
+        "source-layer":"archepelagic_waters",
+        "type":"fill",
+        "paint":{
+            "fill-color":"#dd3",
+            'fill-opacity':0.7
+        },
+        "layout":{
             "visibility":"visible"
         }
     });
-
-    // map.addSource('archipelagic-waters', {
-    //     "type":"geojson",
-    //     "url":"{'type':'FeatureCollection', 'features':[]}"
-    // });
-
-    // map.addLayer({
-    //     "id":'archipelagic-waters',
-    //     "source":'archipelagic-waters',
-    //     "source-layer":"archipelagic-waters",
-    //     "type":"fill",
-    //     "paint":{
-    //         "fill-color":"#d3e289",
-    //     },
-    //     "layout":{
-    //         "visibility":"none"
-    //     }
-    // });
 
     // map.addSource('eez-24nm', {
     //     "type":"vector",
