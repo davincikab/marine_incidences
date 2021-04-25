@@ -564,11 +564,27 @@
             box-shadow: 1px 1px 0.3em #15212f;
         }
 
-        #close-detail-tab {
+        .control-tab {
             position: absolute;
             right: 1%;
             top: 25%;
-            color: white;
+            color: white;   
+        }
+
+        .control-tab span {
+            cursor:pointer;
+            padding:0.1em 0.2em;
+        }
+
+        .control-tab span:hover {
+            background-color: #2b586e;
+        }
+
+        #close-detail-tab {
+            /* position: absolute;
+            right: 1%;
+            top: 25%;
+            color: white; */
         }
 
         .incident-header {
@@ -753,9 +769,19 @@
 
         <div class="incident-detail-tab" id="incident-detail-tab">
             <div class="header-title">INCIDENT DETAIL
-                <span class="" id="close-detail-tab">
-                    <i class="fa fa-times"></i>
-                </span>
+                <div class="control-tab">
+                    <span class="" id="close-print-tab">
+                        <i class="fa fa-print"></i>
+                    </span>
+
+                    <span class="" id="close-info-tab">
+                        <i class="fa fa-info"></i>
+                    </span>
+                    
+                    <span class="" id="close-detail-tab">
+                        <i class="fa fa-times"></i>
+                    </span>
+                </div>
             </div>
             <div class="incident-header">
                 <div class="header-item active" data-href="overview">OVERVIEW</div>
