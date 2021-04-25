@@ -202,7 +202,7 @@ map.on("load", function(e) {
             'fill-opacity':0.7
         },
         "layout":{
-            "visibility":"visible"
+            "visibility":"none"
         }
     });
 
