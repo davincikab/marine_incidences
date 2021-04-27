@@ -2,7 +2,7 @@ var
     articles, 
     incidents, 
     articleMarkers = countries = []
-
+// a&noSm@2P!XM1UZc
 var vesselTypes = ['Container Ship', 'Ro-Ro/Vehicles Carrier, Reefer', 'Aggregates Carrier', 'Cement Carrier', 
 'Ore Carrier', 'Livestock Carrier', 'OBO Carrier', 'Heavy Load Carrier', 'Barge', 'Inland Cargo', 'Special Cargo', 'Other Cargo'];
 
