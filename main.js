@@ -538,7 +538,7 @@ function displayItemInfo(itemId) {
             "<div>" + item.category + "</div>" +
         "</div>" +
         "<div class='d-flex'>"+
-            "<div><img src='https://lilamiaou.github.io/maritime_tracking/Icon/planet-earth.png' /></i> Date:</div>" + 
+            "<div><img src='https://lilamiaou.github.io/maritime_tracking/Icon/planet-earth.png' /></i> Country:</div>" + 
             "<div>" + item.country + "</div>" +
         "</div>" +
         "<div class='d-flex'>"+
@@ -592,8 +592,8 @@ function createAlertListItem(alert) {
     listItem.setAttribute("data-ID", alert._ID);
 
     // add text content
-    listItem.innerHTML += "<span class='dot' style='background-color:"+ alert.bg_color+"'></span>";
-    listItem.innerHTML += alert.country + " " + alert.title;
+    listItem.innerHTML += "<span class='dot' style='background-color:"+ alert.bg_color+"; flex:0.3;'></span>";
+    listItem.innerHTML += "<div style='flex:6;'>" + alert.country + " " + alert.title + "</div>";
 
     // add interactivity
     listItem.addEventListener("click", function(e) {
