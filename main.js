@@ -367,7 +367,7 @@ map.on("load", function(e) {
                     item.child_vessel_type = key;
                 }
             } else {
-                item.child_vessel_type = shipType
+                item.child_vessel_type = item.ship_type;
             }
         });
 
@@ -773,8 +773,9 @@ var vesselFamily = [
     {
         name:'Cargo Vessels',
         value:[
-        'Container Ship', 'Ro-Ro/Vehicles Carrier, Reefer', 'Aggregates Carrier', 'Cement Carrier', 
-        'Ore Carrier', 'Livestock Carrier', 'OBO Carrier', 'Heavy Load Carrier', 'Barge', 'Inland Cargo', 'Special Cargo', 'Other Cargo'
+        'Container Ship', 'Ro-Ro/Vehicles Carrier', 'Reefer', 'Aggregates Carrier', 'Cement Carrier', 
+        'Ore Carrier', 'Livestock Carrier', 'OBO Carrier', 'Heavy Load Carrier', 'Barge', 'Inland Cargo', 'Special Cargo', 'Other Cargo',
+        "Bulk Carrier",  "General Cargo"
         ]
     },
     {
@@ -787,7 +788,7 @@ var vesselFamily = [
     },
     {
         name:'High Speed Craft',
-        value:[]
+        value:['High Speed Craft']
     },
     {
         name:'Tugs and Special Craft',
@@ -807,7 +808,7 @@ var vesselFamily = [
     },
     {
         name:'Unspecified Ship',
-        value:["ship_not_applicable", ""]
+        value:["Ship Not Applicable", ""]
     }
 ]; 
 
