@@ -349,6 +349,28 @@ map.on("load", function(e) {
         // sort the data by cc_created
         data = data.sort((a, b) => new Date(a.cct_created) < new Date(b.cct_created));
 
+        // add child ship type field
+        data.forEach(item => {
+            let shipType = item.ship_type;
+            shipType = shipType.replace(" & ", " ").split(" ").join("_").toLowerCase() || "";
+
+            if(item[shipType]) {
+                let category = item[shipType];
+
+                if(typeof category == "string") {
+                    item.child_vessel_type = category
+                } else {
+                    // find the key with true text
+                    let keys = Object.keys(category);
+                    let key = keys.find(key => category[key] == "true");
+
+                    item.child_vessel_type = key;
+                }
+            } else {
+                item.child_vessel_type = shipType
+            }
+        });
+
         // Incidents in the past week
         let oneWeekInMs = 1000 * 60 * 60 * 24 * 7;
         let filterDate = new Date(new Date() - oneWeekInMs);
@@ -439,7 +461,7 @@ function createMarker(item) {
 
     markerIcon.addEventListener("mouseover", function(e) {
         markerIcon.style.height = "10px";
-        markerIcon.style.width = "10px";
+        markerIcon.style.width = "10px"
 
         markerIcon.classList.add("active-marker");
     });
@@ -514,7 +536,7 @@ function addListenerToPopup() {
 
             // udpate the active section
             let section = document.querySelector(".header-item[data-href="+ href +"]");
-            console.log(section);
+            // console.log(section);
             section.click();
 
             // update the side tab sections
@@ -562,8 +584,8 @@ function displayItemInfo(itemId) {
 
     // console.log("Overview");
 
-    descriptionSection.innerHTML = item.event_description;
-    analysisSection.innerHTML = item.analysis;
+    descriptionSection.innerHTML = item.event_description.split("\n").map(str => "<p>"+str+"</p>").join("");
+    analysisSection.innerHTML = item.analysis.split("\n").map(str => "<p>"+str+"</p>").join("");
 }
 
 function getUTC() {
@@ -769,15 +791,15 @@ var vesselFamily = [
     },
     {
         name:'Tugs and Special Craft',
-        value:[]
+        value:["Tug", "Pusher Tug", "Tug/Supply Vessel", "Special Tug", "Pilot Boat", "Supply Vessel", "Service Vessel", "Offshore Structure", "Dredger", "Research/Survey Vessel", "Crew Boat", "Patrol Vessel", "Cable Layer", "Landing Craft", "Offshore Vessel", "Anchor Handling Vesse", "Platform", "Floating Storage/Production", "Floating Crane", "Drill Ship", "Search & Rescue", "Pollution Control Vessel", "Icebreaker", "Fire Fighting Vessel", "Training Ship", "Inland Tug", "Special Craft", "Military Ops", "Other Tug / Special Craft"]
     },
     {
         name:'Fishing',
-        value:[]
+        value:["Fishing Vessel", "Fish Carrier", "Trawler", "Special Fishing Vessel", "Other Fishing"]
     },
     {
         name:'Pleasure Craft',
-        value:[]
+        value:["Yacht", "Sailing Vessel", "Other Pleasure Craft"]
     },
     {
         name:'Navigation Aids',
@@ -785,7 +807,7 @@ var vesselFamily = [
     },
     {
         name:'Unspecified Ship',
-        value:[]
+        value:["ship_not_applicable", ""]
     }
 ]; 
 
@@ -797,7 +819,7 @@ toggleAllVesselsCheckbox.onclick = function(e) {
         checkboxes.forEach(checkbox => checkbox.checked = true);
 
         // populate the activeVesselTypes
-        activeVesselType = [...new Set(articles.map(a => a.ship_type))];
+        activeVesselType = [...new Set(articles.map(a => a.child_vessel_type))];
         // activeVesselType = vesselFamily.reduce((a, b) => {
         //     a = [...a, ...b.value];
 
@@ -966,6 +988,10 @@ vesselTypeCheckbox.forEach(vessel => {
     });
 });
 
+function filterAlertsByShipType() {
+
+}
+
 function filterAlertsByVesselType(activeVesselType) {
     // filter
     // let vessels = activeVesselType.map(activeVessel => {
@@ -973,7 +999,7 @@ function filterAlertsByVesselType(activeVesselType) {
 
     //     return articleFilter;
     // }).reduce((a, b) => [...a, ...b], []);
-    let vessels = articles.filter(article => activeVesselType.indexOf(article.ship_type) != -1);
+    let vessels = articles.filter(article => activeVesselType.indexOf(article.child_vessel_type) != -1);
 
     console.log(vessels);
 
